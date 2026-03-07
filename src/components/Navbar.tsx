@@ -6,9 +6,23 @@ const Navbar = () => (
       background: 'linear-gradient(180deg, rgba(10,20,38,0.94) 0%, rgba(5,12,22,0.88) 100%)',
       boxShadow: '0 1px 0 hsla(187 92% 47% / 0.05), 0 4px 20px rgba(0,0,0,0.5), 0 16px 60px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)',
     }}>
-    <Link to="/" className="flex items-center gap-3 no-underline">
-      <div className="w-[38px] h-[38px] border border-ainova-accent/40 rounded-lg flex items-center justify-center font-space text-[0.6rem] text-ainova-accent2" style={{ background: 'rgba(59,130,246,0.06)' }}>
-        ACI
+    <Link to="/" className="flex items-center gap-3 no-underline group">
+      <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center font-space text-[0.65rem] font-bold text-ainova-accent2 relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(6,182,212,0.1) 100%)',
+          boxShadow: '0 0 20px rgba(6,182,212,0.15), 0 0 40px rgba(59,130,246,0.08), inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)',
+          border: '1px solid rgba(6,182,212,0.3)',
+          transform: 'perspective(400px) rotateY(-5deg)',
+        }}
+      >
+        <span className="relative z-10" style={{ animation: 'aciPulse 3s ease-in-out infinite' }}>ACI</span>
+        <div className="absolute inset-0 opacity-40" style={{
+          background: 'linear-gradient(135deg, transparent 30%, rgba(6,182,212,0.3) 50%, transparent 70%)',
+          animation: 'aciShine 4s ease-in-out infinite',
+        }} />
+        <div className="absolute inset-0 rounded-xl" style={{
+          background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06) 0%, transparent 60%)',
+        }} />
       </div>
       <div>
         <span className="font-syne font-extrabold text-[1.1rem] text-ainova-bright tracking-[0.12em]">AINOVA</span>
