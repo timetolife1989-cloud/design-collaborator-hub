@@ -2,18 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const Hero = () => (
-  <section className="min-h-[95vh] flex flex-col items-center justify-center text-center px-6 md:px-8 py-24 relative">
-    <motion.div
-      initial={{ opacity: 0, y: 22 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.65, delay: 0.8 }}
-      className="inline-flex items-center gap-2.5 font-space text-[0.68rem] tracking-[0.2em] uppercase text-ainova-accent2 border border-ainova-accent2/20 px-5 py-2 mb-12"
-      style={{ background: 'rgba(6,182,212,0.04)' }}
-    >
-      <span className="w-1.5 h-1.5 rounded-full bg-ainova-accent2" style={{ animation: 'pulse 2s infinite' }} />
-      Industry 4.0 · Cloud-native · Real-time
-    </motion.div>
-
+  <section className="min-h-[75vh] flex flex-col items-center justify-center text-center px-6 md:px-8 pt-8 pb-24 relative">
     <motion.h1
       initial={{ opacity: 0, scale: 0.92, filter: 'blur(12px)' }}
       animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}

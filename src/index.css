@@ -188,6 +188,18 @@
   50% { opacity: 1; }
 }
 
+/* ACI logo animations */
+@keyframes aciPulse {
+  0%, 100% { text-shadow: 0 0 4px hsla(187 92% 47% / 0.3); }
+  50% { text-shadow: 0 0 12px hsla(187 92% 47% / 0.7), 0 0 24px hsla(217 91% 60% / 0.3); }
+}
+
+@keyframes aciShine {
+  0% { transform: translateX(-100%) rotate(25deg); }
+  50% { transform: translateX(100%) rotate(25deg); }
+  100% { transform: translateX(100%) rotate(25deg); }
+}
+
 /* Stat number gradient */
 .stat-gradient {
   background: linear-gradient(135deg, hsl(217 92% 76%), hsl(187 92% 47%));
