@@ -11,18 +11,11 @@ style={{
   transformOrigin: 'top center'
 }}>
     <Link to="/" className="flex items-center gap-3 no-underline group">
-      <div className="w-[56px] h-[56px] rounded-xl flex items-center justify-center relative overflow-hidden -ml-2 border-0 shadow-inner"
-    style={{
-      filter: 'drop-shadow(0 0 8px rgba(6,182,212,0.3))',
-      animation: 'aciPulseGlow 5.7s ease-in-out infinite'
-    }}>
-      
-        <img src={aciLogo} alt="ACI Logo" className="w-full h-full object-contain" />
-        <div className="absolute inset-0 opacity-30" style={{
-        background: 'linear-gradient(135deg, transparent 30%, rgba(6,182,212,0.4) 50%, transparent 70%)',
-        animation: 'aciShine 7.3s ease-in-out infinite'
-      }} />
-      </div>
+      <img src={aciLogo} alt="ACI Logo" className="w-[56px] h-[56px] rounded-xl -ml-2"
+        style={{
+          filter: 'drop-shadow(0 0 8px rgba(6,182,212,0.3))',
+          animation: 'aciPulseGlow 5.7s ease-in-out infinite'
+        }} />
       <div>
         <span className="font-syne font-extrabold text-[1.1rem] tracking-[0.12em] nav-text-pulse">AINOVA</span>
         <span className="font-space text-[0.55rem] tracking-[0.15em] uppercase block -mt-0.5 nav-text-pulse">Cloud Intelligence</span>
