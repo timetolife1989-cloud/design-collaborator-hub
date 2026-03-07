@@ -39,7 +39,6 @@ const Demo = () => {
     timerRef.current.push(iv as unknown as NodeJS.Timeout);
   }, []);
 
-  // Auto-start demo
   useEffect(() => {
     const t = addTimer(() => startDemo(), 2500);
     return () => { clearTimers(); clearTimeout(t); };
@@ -47,7 +46,6 @@ const Demo = () => {
   }, []);
 
   function startDemo() {
-    // Scene 1: Login
     setCurrentScene(1);
     addTimer(() => {
       typeText(setLoginUser, '30008047', 80, () => {
@@ -103,14 +101,11 @@ const Demo = () => {
   function restartDemo() {
     clearTimers();
     setCurrentScene(0);
-    setLoginUser('');
-    setLoginPass('');
+    setLoginUser(''); setLoginPass('');
     setLoginBtnText('Bejelentkezés');
     setAuthSteps([false, false, false, false]);
-    setDashCardsVisible(false);
-    setAnomalyVisible(false);
-    setForecastVisible(false);
-    setResolutionStep(0);
+    setDashCardsVisible(false); setAnomalyVisible(false);
+    setForecastVisible(false); setResolutionStep(0);
     addTimer(() => startDemo(), 2500);
   }
 
@@ -125,35 +120,35 @@ const Demo = () => {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    canvas.width = 500;
-    canvas.height = 400;
+    const size = Math.min(window.innerWidth - 40, 500);
+    canvas.width = size;
+    canvas.height = size * 0.8;
 
-    const cx = 250, cy = 200;
+    const cx = size / 2, cy = canvas.height / 2;
+    const scale = size / 500;
     let t = 0;
-    const electrons = Array.from({ length: 12 }, (_, i) => ({
-      orbit: 60 + (i % 3) * 35,
-      angle: (i / 12) * Math.PI * 2,
+    const electrons = Array.from({ length: 8 }, (_, i) => ({
+      orbit: (60 + (i % 3) * 35) * scale,
+      angle: (i / 8) * Math.PI * 2,
       speed: 0.02 + Math.random() * 0.03,
-      size: 3 + Math.random() * 3,
+      size: (3 + Math.random() * 3) * scale,
       color: ['#00d4ff', '#7c3aed', '#10b981'][i % 3]
     }));
 
     let animId: number;
     function draw() {
-      ctx!.clearRect(0, 0, 500, 400);
+      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
       ctx!.fillStyle = 'rgba(3,8,15,0.3)';
-      ctx!.fillRect(0, 0, 500, 400);
+      ctx!.fillRect(0, 0, canvas!.width, canvas!.height);
 
-      // Nucleus
-      const grad = ctx!.createRadialGradient(cx, cy, 0, cx, cy, 20);
+      const grad = ctx!.createRadialGradient(cx, cy, 0, cx, cy, 20 * scale);
       grad.addColorStop(0, 'rgba(0,212,255,0.9)');
       grad.addColorStop(1, 'rgba(124,58,237,0)');
-      ctx!.beginPath(); ctx!.arc(cx, cy, 18, 0, Math.PI * 2);
+      ctx!.beginPath(); ctx!.arc(cx, cy, 18 * scale, 0, Math.PI * 2);
       ctx!.fillStyle = grad; ctx!.fill();
-      ctx!.beginPath(); ctx!.arc(cx, cy, 8, 0, Math.PI * 2);
+      ctx!.beginPath(); ctx!.arc(cx, cy, 8 * scale, 0, Math.PI * 2);
       ctx!.fillStyle = '#00d4ff'; ctx!.fill();
 
-      // Orbits & electrons
       electrons.forEach(e => {
         ctx!.beginPath(); ctx!.arc(cx, cy, e.orbit, 0, Math.PI * 2);
         ctx!.strokeStyle = 'rgba(255,255,255,0.06)'; ctx!.lineWidth = 1; ctx!.stroke();
@@ -161,28 +156,13 @@ const Demo = () => {
         const x = cx + Math.cos(e.angle) * e.orbit;
         const y = cy + Math.sin(e.angle) * e.orbit;
         ctx!.beginPath(); ctx!.arc(x, y, e.size, 0, Math.PI * 2);
-        ctx!.fillStyle = e.color;
-        ctx!.shadowBlur = 15; ctx!.shadowColor = e.color;
-        ctx!.fill(); ctx!.shadowBlur = 0;
+        ctx!.fillStyle = e.color; ctx!.fill();
       });
-
-      // Data streams
-      for (let i = 0; i < 3; i++) {
-        const angle = t * 0.5 + i * Math.PI * 0.667;
-        const x1 = cx + Math.cos(angle) * 22, y1 = cy + Math.sin(angle) * 22;
-        const x2 = cx + Math.cos(angle) * 140, y2 = cy + Math.sin(angle) * 140;
-        const g = ctx!.createLinearGradient(x1, y1, x2, y2);
-        g.addColorStop(0, ['rgba(0,212,255,0.8)', 'rgba(124,58,237,0.8)', 'rgba(16,185,129,0.8)'][i]);
-        g.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx!.beginPath(); ctx!.moveTo(x1, y1); ctx!.lineTo(x2, y2);
-        ctx!.strokeStyle = g; ctx!.lineWidth = 1.5; ctx!.stroke();
-      }
 
       t += 0.05;
       animId = requestAnimationFrame(draw);
     }
     draw();
-    // Cleanup after scene changes
     addTimer(() => cancelAnimationFrame(animId), 5000);
   }
 
@@ -207,7 +187,6 @@ const Demo = () => {
 
     ctx.clearRect(0, 0, w, h);
 
-    // Grid
     ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
     [0, 0.25, 0.5, 0.75, 1].forEach(f => {
       const y = padT + plotH * (1 - f);
@@ -216,12 +195,10 @@ const Demo = () => {
       ctx.fillText(Math.round(maxVal * f / 1000) + 'k', 4, y + 3);
     });
 
-    // Target line
     const ty = padT + plotH * (1 - target / maxVal);
     ctx.beginPath(); ctx.setLineDash([6, 4]); ctx.moveTo(padL, ty); ctx.lineTo(padL + plotW, ty);
     ctx.strokeStyle = 'rgba(16,185,129,0.5)'; ctx.lineWidth = 1.5; ctx.stroke(); ctx.setLineDash([]);
 
-    // Bars
     data.forEach((v, i) => {
       const bh = (v / maxVal) * plotH;
       const x = padL + i * bw + bw * 0.15;
@@ -244,7 +221,6 @@ const Demo = () => {
       }
     });
 
-    // Performance line
     ctx.beginPath();
     data.forEach((v, i) => {
       const x = padL + i * bw + bw * 0.5;
@@ -252,8 +228,7 @@ const Demo = () => {
       const y = padT + plotH * (1 - Math.min(pct, 1.3) / 1.3);
       if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
     });
-    ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2;
-    ctx.shadowBlur = 8; ctx.shadowColor = '#f59e0b'; ctx.stroke(); ctx.shadowBlur = 0;
+    ctx.strokeStyle = '#f59e0b'; ctx.lineWidth = 2; ctx.stroke();
   }
 
   const dashCards = [
@@ -291,15 +266,17 @@ const Demo = () => {
   ];
 
   return (
-    <div className="w-full h-screen overflow-hidden relative" style={{ background: 'hsl(var(--ainova-bg))' }}>
+    <div className="w-full min-h-screen md:h-screen md:overflow-hidden overflow-y-auto relative" style={{ background: 'hsl(var(--ainova-bg))' }}>
       {/* Scanlines */}
-      <div className="fixed inset-0 z-[5] pointer-events-none"
+      <div className="fixed inset-0 z-[5] pointer-events-none hidden md:block"
         style={{ background: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px)' }} />
 
-      {/* Corner decorations */}
-      {['top-5 left-5 border-t border-l', 'top-5 right-5 border-t border-r', 'bottom-5 left-5 border-b border-l', 'bottom-5 right-5 border-b border-r'].map((cls, i) => (
-        <div key={i} className={`fixed w-[60px] h-[60px] z-20 opacity-30 border-ainova-accent2 ${cls}`} />
-      ))}
+      {/* Corner decorations - desktop only */}
+      <div className="hidden md:block">
+        {['top-5 left-5 border-t border-l', 'top-5 right-5 border-t border-r', 'bottom-5 left-5 border-b border-l', 'bottom-5 right-5 border-b border-r'].map((cls, i) => (
+          <div key={i} className={`fixed w-[60px] h-[60px] z-20 opacity-30 border-ainova-accent2 ${cls}`} />
+        ))}
+      </div>
 
       {/* Progress bar */}
       <div className="fixed top-0 left-0 h-0.5 z-[100] transition-all duration-300"
@@ -322,53 +299,52 @@ const Demo = () => {
       </AnimatePresence>
 
       {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-10 py-5">
-        <Link to="/" className="flex items-center gap-3 font-syne font-extrabold text-xl tracking-[0.05em] text-ainova-bright no-underline">
-          <div className="w-9 h-9 rounded-full flex items-center justify-center text-sm"
+      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 md:px-10 py-3 md:py-5">
+        <Link to="/" className="flex items-center gap-2 md:gap-3 font-syne font-extrabold text-base md:text-xl tracking-[0.05em] text-ainova-bright no-underline">
+          <div className="w-7 h-7 md:w-9 md:h-9 rounded-full flex items-center justify-center text-xs md:text-sm"
             style={{ background: 'conic-gradient(hsl(var(--ainova-accent2)), hsl(var(--ainova-accent3)), hsl(var(--ainova-accent2)))', animation: 'spin 4s linear infinite' }}>
             ◈
           </div>
           AINOVA
         </Link>
-        <div className="flex gap-3 items-center">
-          <button onClick={skipToEnd} className="font-space text-[11px] tracking-[0.1em] uppercase px-5 py-2 rounded-full border border-border text-ainova-muted hover:text-foreground transition-all" style={{ background: 'rgba(255,255,255,0.08)' }}>
+        <div className="flex gap-2 md:gap-3 items-center">
+          <button onClick={skipToEnd} className="font-space text-[9px] md:text-[11px] tracking-[0.1em] uppercase px-3 md:px-5 py-1.5 md:py-2 rounded-full border border-border text-ainova-muted hover:text-foreground transition-all" style={{ background: 'rgba(255,255,255,0.08)' }}>
             Skip →
           </button>
-          <button onClick={restartDemo} className="font-space text-[11px] tracking-[0.1em] uppercase px-5 py-2 rounded-full border border-ainova-accent2/30 text-ainova-accent2 hover:text-foreground transition-all" style={{ background: 'rgba(255,255,255,0.08)' }}>
-            ↺ Újra
+          <button onClick={restartDemo} className="font-space text-[9px] md:text-[11px] tracking-[0.1em] uppercase px-3 md:px-5 py-1.5 md:py-2 rounded-full border border-ainova-accent2/30 text-ainova-accent2 hover:text-foreground transition-all" style={{ background: 'rgba(255,255,255,0.08)' }}>
+            ↺
           </button>
-          <Link to="/" className="font-space text-[11px] tracking-[0.1em] uppercase px-5 py-2 rounded-full border border-border text-ainova-muted no-underline hover:text-foreground transition-all" style={{ background: 'rgba(255,255,255,0.08)' }}>
-            ← Vissza
+          <Link to="/" className="font-space text-[9px] md:text-[11px] tracking-[0.1em] uppercase px-3 md:px-5 py-1.5 md:py-2 rounded-full border border-border text-ainova-muted no-underline hover:text-foreground transition-all" style={{ background: 'rgba(255,255,255,0.08)' }}>
+            ←
           </Link>
         </div>
       </nav>
 
       {/* Dots */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
+      <div className="fixed bottom-4 md:bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
         {SCENES.map((_, i) => (
-          <div key={i} className={`w-2 h-2 rounded-full transition-all duration-300 ${i === currentScene ? 'bg-ainova-accent2 shadow-[0_0_10px_hsl(var(--ainova-accent2))] scale-130' : 'bg-border'}`} />
+          <div key={i} className={`w-1.5 h-1.5 md:w-2 md:h-2 rounded-full transition-all duration-300 ${i === currentScene ? 'bg-ainova-accent2 shadow-[0_0_10px_hsl(var(--ainova-accent2))] scale-130' : 'bg-border'}`} />
         ))}
       </div>
 
       {/* SCENES */}
-      <div className="fixed inset-0 z-10 flex items-center justify-center">
-        {/* Scene 0: Intro */}
+      <div className="fixed inset-0 z-10 flex items-center justify-center px-4 md:px-0 pt-16 pb-12 md:pt-0 md:pb-0">
         <AnimatePresence mode="wait">
           {currentScene === 0 && (
             <motion.div key="intro" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="flex flex-col items-center gap-6 text-center">
+              className="flex flex-col items-center gap-4 md:gap-6 text-center">
               <motion.div initial={{ opacity: 0, y: -40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }}
-                className="font-syne font-extrabold text-[clamp(64px,10vw,120px)] tracking-[0.1em] leading-none gradient-text">
+                className="font-syne font-extrabold text-[clamp(40px,10vw,120px)] tracking-[0.1em] leading-none gradient-text">
                 AINOVA
               </motion.div>
-              <div className="font-space text-xs tracking-[0.25em] text-ainova-muted uppercase">
+              <div className="font-space text-[10px] md:text-xs tracking-[0.25em] text-ainova-muted uppercase">
                 Cloud Intelligence · Industry 4.0
               </div>
-              <div className="text-lg text-foreground/60 font-light max-w-[400px]">
+              <div className="text-sm md:text-lg text-foreground/60 font-light max-w-[400px] px-4">
                 From 164,629 SAP rows to one decision.
               </div>
               <button onClick={startDemo}
-                className="mt-4 px-12 py-4 rounded btn-gradient text-ainova-bright font-syne font-bold text-sm tracking-[0.15em] uppercase hover:-translate-y-0.5 hover:shadow-[0_20px_60px_rgba(0,212,255,0.3)] transition-all relative overflow-hidden">
+                className="mt-2 md:mt-4 px-8 md:px-12 py-3 md:py-4 rounded btn-gradient text-ainova-bright font-syne font-bold text-xs md:text-sm tracking-[0.15em] uppercase hover:-translate-y-0.5 hover:shadow-[0_20px_60px_rgba(0,212,255,0.3)] transition-all relative overflow-hidden">
                 ▶ &nbsp; Watch it work
               </button>
             </motion.div>
@@ -377,23 +353,23 @@ const Demo = () => {
           {/* Scene 1: Login */}
           {currentScene === 1 && (
             <motion.div key="login" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              style={{ perspective: '1000px' }}>
+              style={{ perspective: '1000px' }} className="w-full max-w-[420px] px-4">
               <motion.div initial={{ y: 40, rotateX: 5 }} animate={{ y: 0, rotateX: 0 }} transition={{ duration: 0.8 }}
-                className="w-[420px] p-12 rounded-2xl border border-ainova-accent2/20"
+                className="w-full p-8 md:p-12 rounded-2xl border border-ainova-accent2/20"
                 style={{ background: 'rgba(7,13,26,0.95)', boxShadow: '0 40px 120px rgba(0,0,0,0.6), 0 0 60px rgba(0,212,255,0.05)' }}>
-                <div className="text-center mb-8">
-                  <div className="font-syne font-extrabold text-3xl tracking-[0.12em] gradient-text">AINOVA</div>
-                  <div className="font-space text-[9px] tracking-[0.2em] text-ainova-muted uppercase mt-1">Advanced Intelligent Network Operations</div>
+                <div className="text-center mb-6 md:mb-8">
+                  <div className="font-syne font-extrabold text-2xl md:text-3xl tracking-[0.12em] gradient-text">AINOVA</div>
+                  <div className="font-space text-[8px] md:text-[9px] tracking-[0.2em] text-ainova-muted uppercase mt-1">Advanced Intelligent Network Operations</div>
                 </div>
-                <div className="mb-5">
+                <div className="mb-4 md:mb-5">
                   <label className="block text-xs font-medium text-ainova-muted mb-2 tracking-[0.05em]">Felhasználónév</label>
-                  <input readOnly value={loginUser} className={`w-full px-4 py-3.5 rounded-lg border font-space text-sm text-foreground outline-none transition-all ${loginUser ? 'border-ainova-accent2 shadow-[0_0_20px_rgba(0,212,255,0.1)]' : 'border-foreground/10'}`} style={{ background: 'rgba(255,255,255,0.06)' }} />
+                  <input readOnly value={loginUser} className={`w-full px-4 py-3 md:py-3.5 rounded-lg border font-space text-sm text-foreground outline-none transition-all ${loginUser ? 'border-ainova-accent2 shadow-[0_0_20px_rgba(0,212,255,0.1)]' : 'border-foreground/10'}`} style={{ background: 'rgba(255,255,255,0.06)' }} />
                 </div>
-                <div className="mb-5">
+                <div className="mb-4 md:mb-5">
                   <label className="block text-xs font-medium text-ainova-muted mb-2 tracking-[0.05em]">Jelszó</label>
-                  <input readOnly type="password" value={loginPass} className={`w-full px-4 py-3.5 rounded-lg border font-space text-sm text-foreground outline-none transition-all ${loginPass ? 'border-ainova-accent2 shadow-[0_0_20px_rgba(0,212,255,0.1)]' : 'border-foreground/10'}`} style={{ background: 'rgba(255,255,255,0.06)' }} />
+                  <input readOnly type="password" value={loginPass} className={`w-full px-4 py-3 md:py-3.5 rounded-lg border font-space text-sm text-foreground outline-none transition-all ${loginPass ? 'border-ainova-accent2 shadow-[0_0_20px_rgba(0,212,255,0.1)]' : 'border-foreground/10'}`} style={{ background: 'rgba(255,255,255,0.06)' }} />
                 </div>
-                <button className={`w-full py-4 rounded-lg text-ainova-bright font-syne font-bold text-sm tracking-[0.1em] ${loginBtnText !== 'Bejelentkezés' ? 'bg-gradient-to-r from-ainova-accent2 to-green-500' : 'bg-gradient-to-r from-blue-600 to-purple-600'}`}>
+                <button className={`w-full py-3.5 md:py-4 rounded-lg text-ainova-bright font-syne font-bold text-sm tracking-[0.1em] ${loginBtnText !== 'Bejelentkezés' ? 'bg-gradient-to-r from-ainova-accent2 to-green-500' : 'bg-gradient-to-r from-blue-600 to-purple-600'}`}>
                   {loginBtnText}
                 </button>
               </motion.div>
@@ -403,19 +379,19 @@ const Demo = () => {
           {/* Scene 2: Electron Auth */}
           {currentScene === 2 && (
             <motion.div key="electron" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="flex flex-col items-center gap-5">
-              <canvas ref={electronCanvasRef} width={500} height={400} className="rounded-xl" />
-              <div className="flex gap-8">
+              className="flex flex-col items-center gap-4 md:gap-5 w-full px-4">
+              <canvas ref={electronCanvasRef} className="rounded-xl max-w-full" />
+              <div className="grid grid-cols-4 gap-3 md:gap-8 w-full max-w-[500px]">
                 {authLabels.map((a, i) => (
                   <motion.div key={i}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: authSteps[i] ? 1 : 0, y: authSteps[i] ? 0 : 20 }}
                     className="text-center">
-                    <div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center mx-auto mb-2 text-xl transition-all ${authSteps[i] ? 'border-green-500 bg-green-500/10 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'border-border'}`}>
+                    <div className={`w-9 h-9 md:w-12 md:h-12 rounded-full border-2 flex items-center justify-center mx-auto mb-1.5 md:mb-2 text-base md:text-xl transition-all ${authSteps[i] ? 'border-green-500 bg-green-500/10 shadow-[0_0_20px_rgba(16,185,129,0.3)]' : 'border-border'}`}>
                       {a.icon}
                     </div>
-                    <div className="font-space text-[10px] tracking-[0.1em] uppercase text-ainova-muted">{a.label}</div>
-                    <div className="font-space text-[11px] text-ainova-accent2 mt-1">{a.value}</div>
+                    <div className="font-space text-[8px] md:text-[10px] tracking-[0.1em] uppercase text-ainova-muted">{a.label}</div>
+                    <div className="font-space text-[9px] md:text-[11px] text-ainova-accent2 mt-0.5 md:mt-1 truncate">{a.value}</div>
                   </motion.div>
                 ))}
               </div>
@@ -425,32 +401,30 @@ const Demo = () => {
           {/* Scene 3: Dashboard */}
           {currentScene === 3 && (
             <motion.div key="dashboard" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="px-16 flex flex-col w-full max-w-[900px]">
-              <div className="flex justify-between items-center px-6 py-4 rounded-t-xl border-b border-border" style={{ background: 'rgba(7,13,26,0.9)' }}>
-                <div className="font-syne font-extrabold text-lg tracking-[0.1em] text-ainova-accent2 flex items-center gap-2.5">◈ AINOVA</div>
-                <div className="flex items-center gap-2.5 text-sm">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ainova-accent2 to-ainova-accent3 flex items-center justify-center text-xs font-bold">ST</div>
-                  <div>
+              className="px-4 md:px-16 flex flex-col w-full max-w-[900px] overflow-y-auto max-h-[80vh]">
+              <div className="flex justify-between items-center px-4 md:px-6 py-3 md:py-4 rounded-t-xl border-b border-border" style={{ background: 'rgba(7,13,26,0.9)' }}>
+                <div className="font-syne font-extrabold text-sm md:text-lg tracking-[0.1em] text-ainova-accent2 flex items-center gap-2">◈ AINOVA</div>
+                <div className="flex items-center gap-2 text-xs md:text-sm">
+                  <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-ainova-accent2 to-ainova-accent3 flex items-center justify-center text-[10px] md:text-xs font-bold">ST</div>
+                  <div className="hidden md:block">
                     <div className="text-sm font-semibold">Svasznik Tibor</div>
                     <div className="text-[10px] text-ainova-accent3">Admin</div>
                   </div>
-                  <div className="font-space text-xs text-ainova-muted ml-4">2026.03.07 · 10. hét</div>
-                  <div className="ml-4 px-3.5 py-1.5 rounded-md text-[11px] font-space" style={{ background: 'rgba(239,68,68,0.15)', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444' }}>⏻ KILÉPÉS</div>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-3 p-6 rounded-b-xl border border-t-0 border-border" style={{ background: 'rgba(7,13,26,0.85)' }}>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-3 p-4 md:p-6 rounded-b-xl border border-t-0 border-border" style={{ background: 'rgba(7,13,26,0.85)' }}>
                 {dashCards.map((c, i) => (
                   <motion.div key={i}
                     initial={{ opacity: 0, y: 20, scale: 0.95 }}
                     animate={dashCardsVisible ? { opacity: 1, y: 0, scale: 1 } : {}}
                     transition={{ duration: 0.4, delay: i * 0.08, ease: [0.34, 1.56, 0.64, 1] }}
-                    className={`rounded-xl p-5 border border-border relative overflow-hidden cursor-pointer transition-all hover:border-ainova-accent2/30 hover:shadow-[0_0_30px_rgba(0,212,255,0.05)] ${c.highlight ? 'border-red-500/50 shadow-[0_0_30px_rgba(239,68,68,0.15)]' : ''}`}
+                    className={`rounded-xl p-3 md:p-5 border border-border relative overflow-hidden cursor-default transition-all hover:border-ainova-accent2/30 ${c.highlight ? 'border-red-500/50' : ''}`}
                     style={{ background: 'rgba(255,255,255,0.04)' }}>
                     <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${c.color}`} />
-                    <div className="text-2xl mb-2">{c.icon}</div>
-                    <div className="text-[11px] font-semibold tracking-[0.08em] uppercase text-ainova-muted mb-1">{c.title}</div>
-                    <div className={`font-syne text-[22px] font-bold ${c.valColor || 'text-foreground'}`}>{c.val}</div>
-                    <div className="text-[11px] text-ainova-muted mt-1">{c.sub}</div>
+                    <div className="text-lg md:text-2xl mb-1 md:mb-2">{c.icon}</div>
+                    <div className="text-[9px] md:text-[11px] font-semibold tracking-[0.08em] uppercase text-ainova-muted mb-0.5 md:mb-1">{c.title}</div>
+                    <div className={`font-syne text-base md:text-[22px] font-bold ${c.valColor || 'text-foreground'}`}>{c.val}</div>
+                    <div className="text-[9px] md:text-[11px] text-ainova-muted mt-0.5 md:mt-1">{c.sub}</div>
                   </motion.div>
                 ))}
               </div>
@@ -460,26 +434,26 @@ const Demo = () => {
           {/* Scene 4: Chart */}
           {currentScene === 4 && (
             <motion.div key="chart" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="px-10 flex flex-col gap-4 items-center">
-              <div className="rounded-xl border border-border p-6 w-[860px]" style={{ background: 'rgba(7,13,26,0.9)' }}>
-                <div className="font-syne text-sm font-bold tracking-[0.1em] uppercase text-ainova-accent2 text-center mb-1">— PERC LEADÁSOK —</div>
-                <div className="text-xs text-ainova-muted text-center mb-5">Napi kimutatás · 02.12 – 03.03</div>
+              className="px-4 md:px-10 flex flex-col gap-3 md:gap-4 items-center w-full max-w-[860px] overflow-y-auto max-h-[80vh]">
+              <div className="rounded-xl border border-border p-4 md:p-6 w-full" style={{ background: 'rgba(7,13,26,0.9)' }}>
+                <div className="font-syne text-xs md:text-sm font-bold tracking-[0.1em] uppercase text-ainova-accent2 text-center mb-1">— PERC LEADÁSOK —</div>
+                <div className="text-[10px] md:text-xs text-ainova-muted text-center mb-3 md:mb-5">Napi kimutatás · 02.12 – 03.03</div>
                 <canvas ref={chartCanvasRef} className="w-full" style={{ height: 220 }} />
               </div>
               <motion.div
                 initial={{ opacity: 0, x: 40 }}
                 animate={anomalyVisible ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.6 }}
-                className="rounded-xl p-5 w-[860px] flex items-center gap-6"
+                className="rounded-xl p-4 md:p-5 w-full flex items-center gap-3 md:gap-6"
                 style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)' }}>
-                <div className="text-3xl flex-shrink-0">🔴</div>
-                <div>
-                  <div className="font-syne font-bold text-base text-red-400 mb-1">Anomália: 2026.02.15 — Kiugróan alacsony hét</div>
-                  <div className="text-sm text-ainova-muted">Az adatok automatikusan összevonódtak → A műszak táppénz rátája megkétszereződött ezen a héten.</div>
+                <div className="text-xl md:text-3xl flex-shrink-0">🔴</div>
+                <div className="min-w-0">
+                  <div className="font-syne font-bold text-xs md:text-base text-red-400 mb-1">Anomália: 2026.02.15</div>
+                  <div className="text-[10px] md:text-sm text-ainova-muted">Az adatok automatikusan összevonódtak → A műszak táppénz rátája megkétszereződött.</div>
                 </div>
                 <div className="ml-auto text-right flex-shrink-0">
-                  <div className="font-space text-3xl font-bold text-red-400">+47%</div>
-                  <div className="text-[11px] text-ainova-muted">táppénz spike</div>
+                  <div className="font-space text-xl md:text-3xl font-bold text-red-400">+47%</div>
+                  <div className="text-[9px] md:text-[11px] text-ainova-muted">spike</div>
                 </div>
               </motion.div>
             </motion.div>
@@ -488,24 +462,24 @@ const Demo = () => {
           {/* Scene 5: Forecast */}
           {currentScene === 5 && (
             <motion.div key="forecast" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="px-10 flex flex-col gap-4 items-center">
-              <div className="font-syne text-[13px] tracking-[0.2em] uppercase text-ainova-muted">Következő hét előrejelzés</div>
-              <div className="grid grid-cols-2 gap-4 w-[800px]">
+              className="px-4 md:px-10 flex flex-col gap-3 md:gap-4 items-center w-full max-w-[800px] overflow-y-auto max-h-[80vh]">
+              <div className="font-syne text-[11px] md:text-[13px] tracking-[0.2em] uppercase text-ainova-muted">Következő hét előrejelzés</div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 w-full">
                 {forecastCards.map((c, i) => (
                   <motion.div key={i}
                     initial={{ opacity: 0, y: 30 }}
                     animate={forecastVisible ? { opacity: 1, y: 0 } : {}}
                     transition={{ duration: 0.5, delay: i * 0.15 }}
-                    className={`rounded-xl border border-border p-6 ${c.alert ? 'border-amber-500/40' : ''}`}
+                    className={`rounded-xl border border-border p-4 md:p-6 ${c.alert ? 'border-amber-500/40' : ''}`}
                     style={{ background: c.alert ? 'rgba(245,158,11,0.06)' : 'rgba(7,13,26,0.9)' }}>
-                    {c.badge && <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold mb-3 text-amber-500" style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)' }}>⚡ {c.badge}</div>}
-                    <div className="font-space text-[10px] tracking-[0.15em] uppercase text-ainova-muted mb-4">{c.title}</div>
-                    <div className={`font-syne text-4xl font-extrabold mb-2 ${c.alert ? 'text-amber-500' : 'text-foreground'}`}>{c.val} <span className="text-lg text-ainova-muted">{c.unit}</span></div>
-                    <div className={`text-xs mb-3 ${c.alert ? 'text-amber-500' : 'text-ainova-muted'}`}>{c.sub}</div>
-                    <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
+                    {c.badge && <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] md:text-[11px] font-semibold mb-2 md:mb-3 text-amber-500" style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)' }}>⚡ {c.badge}</div>}
+                    <div className="font-space text-[9px] md:text-[10px] tracking-[0.15em] uppercase text-ainova-muted mb-2 md:mb-4">{c.title}</div>
+                    <div className={`font-syne text-2xl md:text-4xl font-extrabold mb-1 md:mb-2 ${c.alert ? 'text-amber-500' : 'text-foreground'}`}>{c.val} <span className="text-sm md:text-lg text-ainova-muted">{c.unit}</span></div>
+                    <div className={`text-[10px] md:text-xs mb-2 md:mb-3 ${c.alert ? 'text-amber-500' : 'text-ainova-muted'}`}>{c.sub}</div>
+                    <div className="h-1 md:h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.08)' }}>
                       <div className={`h-full rounded-full bg-gradient-to-r ${c.barColor} transition-all duration-1000`} style={{ width: forecastVisible ? `${c.bar}%` : '0%' }} />
                     </div>
-                    <div className={`text-[11px] mt-2 ${c.alert ? 'text-amber-500' : 'text-green-400'}`}>{c.note}</div>
+                    <div className={`text-[10px] md:text-[11px] mt-1.5 md:mt-2 ${c.alert ? 'text-amber-500' : 'text-green-400'}`}>{c.note}</div>
                   </motion.div>
                 ))}
               </div>
@@ -515,19 +489,19 @@ const Demo = () => {
           {/* Scene 6: Resolution */}
           {currentScene === 6 && (
             <motion.div key="resolution" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              className="flex flex-col items-center gap-5">
+              className="flex flex-col items-center gap-4 md:gap-5 px-4 overflow-y-auto max-h-[80vh]">
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: resolutionStep >= 1 ? 1 : 0 }}
-                className="font-syne text-sm font-bold tracking-[0.2em] uppercase text-ainova-muted">
+                className="font-syne text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-ainova-muted">
                 Rendszer egyensúlyban
               </motion.div>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: resolutionStep >= 1 ? 1 : 0 }}
-                className="grid grid-cols-5 gap-2.5 w-[700px]">
+                className="grid grid-cols-5 gap-1.5 md:gap-2.5 w-full max-w-[700px]">
                 {resCards.map((c, i) => (
-                  <div key={i} className={`rounded-lg p-4 text-center border transition-all duration-500 ${resolutionStep >= i + 2 ? 'bg-green-500/[0.08] border-green-500/40 shadow-[0_0_20px_rgba(16,185,129,0.1)]' : 'border-border'}`}
+                  <div key={i} className={`rounded-lg p-2 md:p-4 text-center border transition-all duration-500 ${resolutionStep >= i + 2 ? 'bg-green-500/[0.08] border-green-500/40' : 'border-border'}`}
                     style={{ background: resolutionStep >= i + 2 ? undefined : 'rgba(255,255,255,0.04)' }}>
-                    <div className="text-xl mb-1.5">{c.icon}</div>
-                    <div className="text-[10px] text-ainova-muted">{c.label}</div>
-                    <div className={`font-space text-[9px] mt-1 text-green-400 transition-opacity ${resolutionStep >= i + 2 ? 'opacity-100' : 'opacity-0'}`}>{c.status}</div>
+                    <div className="text-base md:text-xl mb-1">{c.icon}</div>
+                    <div className="text-[8px] md:text-[10px] text-ainova-muted">{c.label}</div>
+                    <div className={`font-space text-[8px] md:text-[9px] mt-0.5 md:mt-1 text-green-400 transition-opacity ${resolutionStep >= i + 2 ? 'opacity-100' : 'opacity-0'}`}>{c.status}</div>
                   </div>
                 ))}
               </motion.div>
@@ -535,17 +509,17 @@ const Demo = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: resolutionStep >= 6 ? 1 : 0, y: resolutionStep >= 6 ? 0 : 30 }}
                 transition={{ duration: 0.8 }}
-                className="font-syne text-3xl font-extrabold text-center tracking-[0.05em] leading-[1.2] gradient-text max-w-[600px]">
+                className="font-syne text-xl md:text-3xl font-extrabold text-center tracking-[0.05em] leading-[1.2] gradient-text max-w-[600px]">
                 Silence the noise.<br />See the truth.
               </motion.div>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: resolutionStep >= 6 ? 1 : 0 }}
-                className="flex gap-4">
-                <a href="mailto:info@ainovacloud.com" className="px-9 py-3.5 rounded btn-gradient text-ainova-bright font-syne font-bold text-[13px] tracking-[0.1em] uppercase no-underline shadow-[0_10px_40px_rgba(0,212,255,0.2)] hover:-translate-y-0.5 transition-all">
+                className="flex flex-col md:flex-row gap-3 md:gap-4">
+                <a href="mailto:info@ainovacloud.com" className="px-6 md:px-9 py-3 md:py-3.5 rounded btn-gradient text-ainova-bright font-syne font-bold text-[11px] md:text-[13px] tracking-[0.1em] uppercase no-underline transition-all text-center">
                   Kapcsolatfelvétel
                 </a>
-                <Link to="/" className="px-9 py-3.5 rounded border border-border text-ainova-muted font-syne font-bold text-[13px] tracking-[0.1em] uppercase no-underline hover:border-foreground/30 hover:text-foreground transition-all">
+                <Link to="/" className="px-6 md:px-9 py-3 md:py-3.5 rounded border border-border text-ainova-muted font-syne font-bold text-[11px] md:text-[13px] tracking-[0.1em] uppercase no-underline hover:border-foreground/30 hover:text-foreground transition-all text-center">
                   ainovacloud.com ↗
                 </Link>
               </motion.div>
