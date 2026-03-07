@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
 const Hero = () => (
-  <section className="min-h-[75vh] flex flex-col items-center justify-center text-center px-6 md:px-8 pt-8 pb-24 relative">
+  <section className="min-h-[75vh] flex flex-col items-center justify-center text-center px-6 md:px-8 pt-8 pb-14 relative">
     <motion.h1
       initial={{ opacity: 0, scale: 0.92, filter: 'blur(12px)' }}
       animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
@@ -51,7 +51,7 @@ const Hero = () => (
       transition={{ duration: 0.6, delay: 3.0 }}
       className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center"
     >
-      <div className="w-px h-[50px]" style={{ background: 'linear-gradient(to bottom, transparent, hsl(var(--ainova-accent2)))', animation: 'scrollPulse 2s ease infinite' }} />
+      <div className="w-px h-[80px]" style={{ background: 'linear-gradient(to bottom, transparent, hsl(var(--ainova-accent2)))', animation: 'scrollPulse 2s ease infinite' }} />
     </motion.div>
   </section>
 );
