@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import aciLogo from '@/assets/aci-logo.png';
 
 const Navbar = () =>
 <nav className="flex items-center justify-between px-4 md:px-16 py-5 backdrop-blur-[40px] sticky top-0 z-[100] opacity-0 animate-[fadeIn_0.7s_ease_0.5s_forwards]"
@@ -11,11 +10,6 @@ style={{
   transformOrigin: 'top center'
 }}>
     <Link to="/" className="flex items-center gap-3 no-underline group">
-      <img src={aciLogo} alt="ACI Logo" className="w-[56px] h-[56px] rounded-xl -ml-2"
-        style={{
-          filter: 'drop-shadow(0 0 8px rgba(6,182,212,0.3))',
-          animation: 'aciPulseGlow 5.7s ease-in-out infinite'
-        }} />
       <div>
         <span className="font-syne font-extrabold text-[1.1rem] tracking-[0.12em] nav-text-pulse">AINOVA</span>
         <span className="font-space text-[0.55rem] tracking-[0.15em] uppercase block -mt-0.5 nav-text-pulse">Cloud Intelligence</span>
