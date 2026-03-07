@@ -11,7 +11,7 @@ const Navbar = () => (
       transformOrigin: 'top center',
     }}>
     <Link to="/" className="flex items-center gap-3 no-underline group">
-      <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center relative overflow-hidden"
+      <div className="w-[56px] h-[56px] rounded-xl flex items-center justify-center relative overflow-hidden"
         style={{
           filter: 'drop-shadow(0 0 8px rgba(6,182,212,0.3))',
           animation: 'aciPulseGlow 5.7s ease-in-out infinite',
