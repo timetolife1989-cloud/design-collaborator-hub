@@ -13,7 +13,7 @@ const modules = [
 ];
 
 const ModulesSection = () => (
-  <section className="py-20 md:py-32 px-6 md:px-16 max-w-[1200px] mx-auto" id="modules">
+  <section className="py-14 md:py-24 px-6 md:px-16 max-w-[1200px] mx-auto" id="modules">
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
