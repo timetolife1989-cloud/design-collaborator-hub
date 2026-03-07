@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import aciLogo from '@/assets/aci-logo.png';
 
 const Navbar = () => (
   <nav className="flex items-center justify-between px-4 md:px-16 py-5 backdrop-blur-[40px] sticky top-0 z-[100] opacity-0 animate-[fadeIn_0.7s_ease_0.5s_forwards]"
@@ -10,21 +11,16 @@ const Navbar = () => (
       transformOrigin: 'top center',
     }}>
     <Link to="/" className="flex items-center gap-3 no-underline group">
-      <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center font-space text-[0.65rem] font-bold text-ainova-accent2 relative overflow-hidden"
+      <div className="w-[42px] h-[42px] rounded-xl flex items-center justify-center relative overflow-hidden"
         style={{
-          background: 'linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(6,182,212,0.1) 100%)',
-          boxShadow: '0 0 20px rgba(6,182,212,0.15), 0 0 40px rgba(59,130,246,0.08), inset 0 1px 0 rgba(255,255,255,0.08), 0 4px 12px rgba(0,0,0,0.3)',
-          border: '1px solid rgba(6,182,212,0.3)',
-          transform: 'perspective(400px) rotateY(-5deg)',
+          filter: 'drop-shadow(0 0 8px rgba(6,182,212,0.3))',
+          animation: 'aciPulseGlow 5.7s ease-in-out infinite',
         }}
       >
-        <span className="relative z-10" style={{ animation: 'aciPulse 5.7s ease-in-out infinite' }}>ACI</span>
-        <div className="absolute inset-0 opacity-40" style={{
-          background: 'linear-gradient(135deg, transparent 30%, rgba(6,182,212,0.3) 50%, transparent 70%)',
+        <img src={aciLogo} alt="ACI Logo" className="w-full h-full object-contain" />
+        <div className="absolute inset-0 opacity-30" style={{
+          background: 'linear-gradient(135deg, transparent 30%, rgba(6,182,212,0.4) 50%, transparent 70%)',
           animation: 'aciShine 7.3s ease-in-out infinite',
-        }} />
-        <div className="absolute inset-0 rounded-xl" style={{
-          background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06) 0%, transparent 60%)',
         }} />
       </div>
       <div>
