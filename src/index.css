@@ -188,6 +188,17 @@
   50% { opacity: 1; }
 }
 
+/* ACI logo glow */
+@keyframes aciPulseGlow {
+  0% { filter: drop-shadow(0 0 6px rgba(6,182,212,0.2)); }
+  15% { filter: drop-shadow(0 0 12px rgba(6,182,212,0.5)) drop-shadow(0 0 20px rgba(59,130,246,0.15)); }
+  30% { filter: drop-shadow(0 0 5px rgba(6,182,212,0.25)); }
+  55% { filter: drop-shadow(0 0 16px rgba(59,130,246,0.4)) drop-shadow(0 0 30px rgba(6,182,212,0.1)); }
+  70% { filter: drop-shadow(0 0 7px rgba(6,182,212,0.3)); }
+  85% { filter: drop-shadow(0 0 10px rgba(6,182,212,0.45)); }
+  100% { filter: drop-shadow(0 0 6px rgba(6,182,212,0.2)); }
+}
+
 /* ACI logo animations */
 @keyframes aciPulse {
   0% { text-shadow: 0 0 4px hsla(187 92% 47% / 0.2); }
