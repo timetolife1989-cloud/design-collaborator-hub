@@ -1,14 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Navbar from '@/components/Navbar';
+import Hero from '@/components/Hero';
+import StatsBar from '@/components/StatsBar';
+import ModulesSection from '@/components/ModulesSection';
+import FeaturesSection from '@/components/FeaturesSection';
+import TechSection from '@/components/TechSection';
+import CtaSection from '@/components/CtaSection';
+import Footer from '@/components/Footer';
+import NeuronCanvas from '@/components/NeuronCanvas';
+import LiquidBlobs from '@/components/LiquidBlobs';
 
-const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+const Index = () => (
+  <div className="ainova-body-bg ainova-body-vignette ainova-grid-bg relative">
+    <LiquidBlobs />
+    <NeuronCanvas />
+    <div className="relative z-[2]">
+      <Navbar />
+      <Hero />
+      <StatsBar />
+      <ModulesSection />
+      <FeaturesSection />
+      <TechSection />
+      <CtaSection />
+      <Footer />
     </div>
-  );
-};
+  </div>
+);
 
 export default Index;
