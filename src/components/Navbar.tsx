@@ -18,10 +18,10 @@ const Navbar = () => (
           transform: 'perspective(400px) rotateY(-5deg)',
         }}
       >
-        <span className="relative z-10" style={{ animation: 'aciPulse 3s ease-in-out infinite' }}>ACI</span>
+        <span className="relative z-10" style={{ animation: 'aciPulse 5.7s ease-in-out infinite' }}>ACI</span>
         <div className="absolute inset-0 opacity-40" style={{
           background: 'linear-gradient(135deg, transparent 30%, rgba(6,182,212,0.3) 50%, transparent 70%)',
-          animation: 'aciShine 4s ease-in-out infinite',
+          animation: 'aciShine 7.3s ease-in-out infinite',
         }} />
         <div className="absolute inset-0 rounded-xl" style={{
           background: 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.06) 0%, transparent 60%)',
