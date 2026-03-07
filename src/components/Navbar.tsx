@@ -24,8 +24,8 @@ style={{
       }} />
       </div>
       <div>
-        <span className="font-syne font-extrabold text-[1.1rem] text-ainova-bright tracking-[0.12em]">AINOVA</span>
-        <span className="font-space text-[0.55rem] text-ainova-muted tracking-[0.15em] uppercase block -mt-0.5">Cloud Intelligence</span>
+        <span className="font-syne font-extrabold text-[1.1rem] tracking-[0.12em] nav-text-pulse">AINOVA</span>
+        <span className="font-space text-[0.55rem] tracking-[0.15em] uppercase block -mt-0.5 nav-text-pulse">Cloud Intelligence</span>
       </div>
     </Link>
     <ul className="hidden md:flex gap-10 list-none">
