@@ -447,7 +447,7 @@ const Demo = () => {
                 transition={{ duration: 0.6 }}
                 className="rounded-xl p-4 md:p-5 w-full flex items-center gap-3 md:gap-6"
                 style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)' }}>
-                <div className="text-xl md:text-3xl flex-shrink-0">🔴</div>
+                <div className="flex-shrink-0"><AlertTriangle className="w-6 h-6 md:w-8 md:h-8 text-red-400" strokeWidth={1.5} /></div>
                 <div className="min-w-0">
                   <div className="font-syne font-bold text-xs md:text-base text-red-400 mb-1">Anomália: 2026.02.15</div>
                   <div className="text-[10px] md:text-sm text-ainova-muted">Az adatok automatikusan összevonódtak → A műszak táppénz rátája megkétszereződött.</div>
