@@ -42,7 +42,7 @@ const ModulesSection = () => (
           className="bg-background p-10 transition-all relative overflow-hidden group cursor-default"
         >
           <div className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--ainova-accent2)), transparent)' }} />
-          <span className="text-[1.4rem] mb-6 block">{m.icon}</span>
+          <m.icon className="w-6 h-6 mb-6 text-ainova-accent2" strokeWidth={1.5} />
           <div className="font-syne font-bold text-[0.95rem] text-ainova-bright mb-2.5 tracking-[0.02em]">{m.name}</div>
           <div className="text-[0.82rem] text-ainova-muted leading-[1.8]">{m.desc}</div>
           <span className="inline-block mt-5 font-space text-[0.58rem] tracking-[0.1em] uppercase text-ainova-accent2 border border-ainova-accent2/15 px-2.5 py-1">{m.tag}</span>
