@@ -500,7 +500,7 @@ const Demo = () => {
                 {resCards.map((c, i) => (
                   <div key={i} className={`rounded-lg p-2 md:p-4 text-center border transition-all duration-500 ${resolutionStep >= i + 2 ? 'bg-green-500/[0.08] border-green-500/40' : 'border-border'}`}
                     style={{ background: resolutionStep >= i + 2 ? undefined : 'rgba(255,255,255,0.04)' }}>
-                    <div className="text-base md:text-xl mb-1">{c.icon}</div>
+                    <div className="flex justify-center mb-1">{c.icon}</div>
                     <div className="text-[8px] md:text-[10px] text-ainova-muted">{c.label}</div>
                     <div className={`font-space text-[8px] md:text-[9px] mt-0.5 md:mt-1 text-green-400 transition-opacity ${resolutionStep >= i + 2 ? 'opacity-100' : 'opacity-0'}`}>{c.status}</div>
                   </div>
