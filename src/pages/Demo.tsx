@@ -422,7 +422,7 @@ const Demo = () => {
                     className={`rounded-xl p-3 md:p-5 border border-border relative overflow-hidden cursor-default transition-all hover:border-ainova-accent2/30 ${c.highlight ? 'border-red-500/50' : ''}`}
                     style={{ background: 'rgba(255,255,255,0.04)' }}>
                     <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${c.color}`} />
-                    <div className="text-lg md:text-2xl mb-1 md:mb-2">{c.icon}</div>
+                    <div className="mb-1 md:mb-2">{c.icon}</div>
                     <div className="text-[9px] md:text-[11px] font-semibold tracking-[0.08em] uppercase text-ainova-muted mb-0.5 md:mb-1">{c.title}</div>
                     <div className={`font-syne text-base md:text-[22px] font-bold ${c.valColor || 'text-foreground'}`}>{c.val}</div>
                     <div className="text-[9px] md:text-[11px] text-ainova-muted mt-0.5 md:mt-1">{c.sub}</div>
