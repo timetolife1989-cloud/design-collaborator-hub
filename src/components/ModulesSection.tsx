@@ -1,15 +1,17 @@
 import { motion } from 'framer-motion';
+import { BarChart3, Timer, UserCheck, ScanSearch, CalendarRange, Map, Package, Workflow, Settings2 } from 'lucide-react';
+import { type LucideIcon } from 'lucide-react';
 
-const modules = [
-  { icon: '📊', name: 'Headcount Recording', desc: 'Shift-by-shift headcount by position. Named absence tracking. Full audit log on every change.', tag: 'Real-time' },
-  { icon: '⏱️', name: 'Daily Minutes', desc: 'SAP-based performance measurement. Pull vs. delivery, EUR calculation, shift breakdown to the minute.', tag: 'SAP Integration' },
-  { icon: '👤', name: 'Operator Performance', desc: 'Individual tracking by employee ID. Minutes worked, orders completed, norm comparison.', tag: 'Dashboard' },
-  { icon: '🔍', name: 'Production Tracking', desc: 'Order lifecycle tracking. Automatic 5+ hour critical wait alerts. Order, material, operator search.', tag: 'Alert System' },
-  { icon: '📅', name: 'Allocation Table', desc: 'Production scheduling and capacity planning. Automatic shift rotation in 3-week cycles.', tag: 'Shift Management' },
-  { icon: '🗺️', name: 'Area Performance', desc: 'Area-by-area reports. Multi-zone breakdown with comparable performance metrics.', tag: 'Multi-zone' },
-  { icon: '📦', name: 'Delivered Products', desc: 'Shipping return tracking. Product ID scan support. Full lifecycle visualization.', tag: 'Barcode Ready' },
-  { icon: '🏭', name: 'Process Tracking', desc: 'Throughput time monitoring. Inter-process wait time measurement and alerting.', tag: 'Process Tracking' },
-  { icon: '⚙️', name: 'Admin Panel', desc: 'Users, roles, medical fitness, War Room printing. Everything configurable — no code changes needed.', tag: 'Full Control' },
+const modules: { icon: LucideIcon; name: string; desc: string; tag: string }[] = [
+  { icon: BarChart3, name: 'Headcount Recording', desc: 'Shift-by-shift headcount by position. Named absence tracking. Full audit log on every change.', tag: 'Real-time' },
+  { icon: Timer, name: 'Daily Minutes', desc: 'SAP-based performance measurement. Pull vs. delivery, EUR calculation, shift breakdown to the minute.', tag: 'SAP Integration' },
+  { icon: UserCheck, name: 'Operator Performance', desc: 'Individual tracking by employee ID. Minutes worked, orders completed, norm comparison.', tag: 'Dashboard' },
+  { icon: ScanSearch, name: 'Production Tracking', desc: 'Order lifecycle tracking. Automatic 5+ hour critical wait alerts. Order, material, operator search.', tag: 'Alert System' },
+  { icon: CalendarRange, name: 'Allocation Table', desc: 'Production scheduling and capacity planning. Automatic shift rotation in 3-week cycles.', tag: 'Shift Management' },
+  { icon: Map, name: 'Area Performance', desc: 'Area-by-area reports. Multi-zone breakdown with comparable performance metrics.', tag: 'Multi-zone' },
+  { icon: Package, name: 'Delivered Products', desc: 'Shipping return tracking. Product ID scan support. Full lifecycle visualization.', tag: 'Barcode Ready' },
+  { icon: Workflow, name: 'Process Tracking', desc: 'Throughput time monitoring. Inter-process wait time measurement and alerting.', tag: 'Process Tracking' },
+  { icon: Settings2, name: 'Admin Panel', desc: 'Users, roles, medical fitness, War Room printing. Everything configurable — no code changes needed.', tag: 'Full Control' },
 ];
 
 const ModulesSection = () => (
