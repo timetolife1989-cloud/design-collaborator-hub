@@ -233,37 +233,37 @@ const Demo = () => {
   }
 
   const dashCards = [
-    { icon: '📊', title: 'Napi Perces', val: '25,820', sub: 'perc leadva · 92.2% cél', color: 'from-blue-500 to-blue-400' },
-    { icon: '👥', title: 'Létszám', val: '98 fő', sub: '3 műszak aktív', color: 'from-purple-600 to-purple-400' },
-    { icon: '📦', title: 'Leszállított', val: '2,061 db', sub: '30,647 EUR · ma', color: 'from-green-500 to-green-400' },
-    { icon: '🗂️', title: 'Allokáció', val: 'CW10', sub: 'Heti terv vs teljesítés', color: 'from-amber-500 to-amber-400' },
-    { icon: '🔍', title: 'Termeléskövetés', val: '⚠ 3 kritikus', sub: '5+ óra várakozás', color: 'from-cyan-400 to-cyan-300', valColor: 'text-red-400' },
-    { icon: '⚡', title: 'Operátori Teljesítmény', val: '9 terület', sub: 'Szerelés · Tekercselő · Mérő', color: 'from-pink-500 to-pink-400' },
-    { icon: '📥', title: 'SAP Import', val: '164,629', sub: 'sor feldolgozva', color: 'from-teal-500 to-teal-400' },
-    { icon: '🏭', title: 'War Room', val: 'Élő', sub: 'Nyomtatásra kész', color: 'from-orange-500 to-orange-400' },
-    { icon: '🚨', title: 'Anomália detektálva', val: '02.15', sub: 'Alacsony teljesítmény hét', color: 'from-red-500 to-red-400', highlight: true, valColor: 'text-red-400' },
+    { icon: <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Napi Perces', val: '25,820', sub: 'perc leadva · 92.2% cél', color: 'from-blue-500 to-blue-400' },
+    { icon: <Users className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Létszám', val: '98 fő', sub: '3 műszak aktív', color: 'from-purple-600 to-purple-400' },
+    { icon: <Package className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Leszállított', val: '2,061 db', sub: '30,647 EUR · ma', color: 'from-green-500 to-green-400' },
+    { icon: <FolderKanban className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Allokáció', val: 'CW10', sub: 'Heti terv vs teljesítés', color: 'from-amber-500 to-amber-400' },
+    { icon: <ScanSearch className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Termeléskövetés', val: '⚠ 3 kritikus', sub: '5+ óra várakozás', color: 'from-cyan-400 to-cyan-300', valColor: 'text-red-400' },
+    { icon: <Zap className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Operátori Teljesítmény', val: '9 terület', sub: 'Szerelés · Tekercselő · Mérő', color: 'from-pink-500 to-pink-400' },
+    { icon: <DatabaseZap className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'SAP Import', val: '164,629', sub: 'sor feldolgozva', color: 'from-teal-500 to-teal-400' },
+    { icon: <Factory className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'War Room', val: 'Élő', sub: 'Nyomtatásra kész', color: 'from-orange-500 to-orange-400' },
+    { icon: <AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-red-400" strokeWidth={1.5} />, title: 'Anomália detektálva', val: '02.15', sub: 'Alacsony teljesítmény hét', color: 'from-red-500 to-red-400', highlight: true, valColor: 'text-red-400' },
   ];
 
   const forecastCards = [
     { title: '▲ Beérkező rendelések', val: '12,400', unit: 'db', sub: 'CW11 · következő hét igény', bar: 80, barColor: 'from-cyan-400 to-purple-400', note: 'vs kapacitás: 82%' },
     { title: '⚠ HC Kalkulátor', val: '−8 fő', unit: '', sub: 'Várható létszámhiány · C műszak · kedd', bar: 65, barColor: 'from-amber-500 to-red-500', note: 'Rendelési igény > elérhető kapacitás', alert: true, badge: 'Headcount Alert' },
     { title: '◎ Napi cél perc', val: '28,000', unit: 'min', sub: 'fallback target · heti nincs beállítva', bar: 92, barColor: 'from-green-500 to-cyan-300', note: 'Elérhető: 25,820 perc (92.2%)' },
-    { title: '💶 EUR Bevétel becslés', val: '~34,000', unit: '€', sub: 'Siemens DC + No Siemens + Él tekercselés', bar: 88, barColor: 'from-green-500 to-green-400', note: 'Az előző hét átlagán alapul' },
+    { title: '€ EUR Bevétel becslés', val: '~34,000', unit: '€', sub: 'Siemens DC + No Siemens + Él tekercselés', bar: 88, barColor: 'from-green-500 to-green-400', note: 'Az előző hét átlagán alapul' },
   ];
 
   const resCards = [
-    { icon: '📊', label: 'Napi Perces', status: '✓ OK' },
-    { icon: '👥', label: 'Létszám', status: '✓ OK' },
-    { icon: '📦', label: 'Leszállított', status: '✓ OK' },
-    { icon: '🔍', label: 'Követés', status: '✓ OK' },
-    { icon: '☁', label: 'Cloud', status: '✓ Live' },
+    { icon: <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Napi Perces', status: '✓ OK' },
+    { icon: <Users className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Létszám', status: '✓ OK' },
+    { icon: <Package className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Leszállított', status: '✓ OK' },
+    { icon: <ScanSearch className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Követés', status: '✓ OK' },
+    { icon: <Cloud className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Cloud', status: '✓ Live' },
   ];
 
   const authLabels = [
-    { icon: '🔑', label: 'JWT Token', value: 'eyJhbGc...' },
-    { icon: '🔐', label: 'bcrypt Hash', value: '$2b$12$...' },
-    { icon: '✓', label: 'Role: Admin', value: 'Svasznik Tibor' },
-    { icon: '☁', label: 'DB Connect', value: 'SQL Server ✓' },
+    { icon: <KeyRound className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'JWT Token', value: 'eyJhbGc...' },
+    { icon: <ShieldCheck className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'bcrypt Hash', value: '$2b$12$...' },
+    { icon: <UserCheck className="w-4 h-4 md:w-5 md:h-5 text-green-400" strokeWidth={1.5} />, label: 'Role: Admin', value: 'Svasznik Tibor' },
+    { icon: <Cloud className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'DB Connect', value: 'SQL Server ✓' },
   ];
 
   return (
