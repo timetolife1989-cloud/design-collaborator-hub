@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BarChart3, Users, Package, FolderKanban, ScanSearch, Zap, DatabaseZap, Factory, AlertTriangle, KeyRound, ShieldCheck, UserCheck, Cloud } from 'lucide-react';
 
 const SCENES = ['intro', 'login', 'electron', 'dashboard', 'chart', 'forecast', 'resolution'] as const;
 
