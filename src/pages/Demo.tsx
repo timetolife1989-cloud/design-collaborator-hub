@@ -2,14 +2,19 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart3, Users, Package, FolderKanban, ScanSearch, Zap, DatabaseZap, Factory, AlertTriangle, KeyRound, ShieldCheck, UserCheck, Cloud } from 'lucide-react';
+import { useLanguage } from '@/i18n/LanguageContext';
+import { translations, t } from '@/i18n/translations';
 
 const SCENES = ['intro', 'login', 'electron', 'dashboard', 'chart', 'forecast', 'resolution'] as const;
 
 const Demo = () => {
+  const { lang } = useLanguage();
+  const d = translations.demo;
+
   const [currentScene, setCurrentScene] = useState(0);
   const [loginUser, setLoginUser] = useState('');
   const [loginPass, setLoginPass] = useState('');
-  const [loginBtnText, setLoginBtnText] = useState('Bejelentkezés');
+  const [loginBtnText, setLoginBtnText] = useState(t(d.login, lang));
   const [authSteps, setAuthSteps] = useState([false, false, false, false]);
   const [dashCardsVisible, setDashCardsVisible] = useState(false);
   const [anomalyVisible, setAnomalyVisible] = useState(false);
@@ -26,9 +31,9 @@ const Demo = () => {
   }, []);
 
   const addTimer = useCallback((cb: () => void, ms: number) => {
-    const t = setTimeout(cb, ms);
-    timerRef.current.push(t);
-    return t;
+    const ti = setTimeout(cb, ms);
+    timerRef.current.push(ti);
+    return ti;
   }, []);
 
   const typeText = useCallback((setter: (v: string) => void, text: string, speed: number, cb?: () => void) => {
@@ -41,8 +46,8 @@ const Demo = () => {
   }, []);
 
   useEffect(() => {
-    const t = addTimer(() => startDemo(), 2500);
-    return () => { clearTimers(); clearTimeout(t); };
+    const ti = addTimer(() => startDemo(), 2500);
+    return () => { clearTimers(); clearTimeout(ti); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -53,7 +58,7 @@ const Demo = () => {
         addTimer(() => {
           typeText(setLoginPass, '••••••••••••', 60, () => {
             addTimer(() => {
-              setLoginBtnText('Hitelesítés...');
+              setLoginBtnText(t(d.authenticating, lang));
               addTimer(() => runElectron(), 800);
             }, 400);
           });
@@ -103,7 +108,7 @@ const Demo = () => {
     clearTimers();
     setCurrentScene(0);
     setLoginUser(''); setLoginPass('');
-    setLoginBtnText('Bejelentkezés');
+    setLoginBtnText(t(d.login, lang));
     setAuthSteps([false, false, false, false]);
     setDashCardsVisible(false); setAnomalyVisible(false);
     setForecastVisible(false); setResolutionStep(0);
@@ -127,7 +132,6 @@ const Demo = () => {
 
     const cx = size / 2, cy = canvas.height / 2;
     const scale = size / 500;
-    let t = 0;
     const electrons = Array.from({ length: 8 }, (_, i) => ({
       orbit: (60 + (i % 3) * 35) * scale,
       angle: (i / 8) * Math.PI * 2,
@@ -160,7 +164,6 @@ const Demo = () => {
         ctx!.fillStyle = e.color; ctx!.fill();
       });
 
-      t += 0.05;
       animId = requestAnimationFrame(draw);
     }
     draw();
@@ -207,10 +210,10 @@ const Demo = () => {
       const bWidth = bw * 0.7;
       const isAnomaly = i === 3;
       const color = isAnomaly ? 'rgba(239,68,68,0.9)' : v >= target ? 'rgba(59,130,246,0.85)' : 'rgba(59,130,246,0.5)';
-      const grad = ctx.createLinearGradient(0, y, 0, y + bh);
-      grad.addColorStop(0, color);
-      grad.addColorStop(1, color.replace(/0\.\d+\)/, '0.2)'));
-      ctx.fillStyle = grad;
+      const grd = ctx.createLinearGradient(0, y, 0, y + bh);
+      grd.addColorStop(0, color);
+      grd.addColorStop(1, color.replace(/0\.\d+\)/, '0.2)'));
+      ctx.fillStyle = grd;
       ctx.fillRect(x, y, bWidth, bh);
       if (isAnomaly) {
         ctx.strokeStyle = 'rgba(239,68,68,0.6)'; ctx.lineWidth = 1.5;
@@ -233,29 +236,29 @@ const Demo = () => {
   }
 
   const dashCards = [
-    { icon: <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Napi Perces', val: '25,820', sub: 'perc leadva · 92.2% cél', color: 'from-blue-500 to-blue-400' },
-    { icon: <Users className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Létszám', val: '98 fő', sub: '3 műszak aktív', color: 'from-purple-600 to-purple-400' },
-    { icon: <Package className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Leszállított', val: '2,061 db', sub: '30,647 EUR · ma', color: 'from-green-500 to-green-400' },
-    { icon: <FolderKanban className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Allokáció', val: 'CW10', sub: 'Heti terv vs teljesítés', color: 'from-amber-500 to-amber-400' },
-    { icon: <ScanSearch className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Termeléskövetés', val: '⚠ 3 kritikus', sub: '5+ óra várakozás', color: 'from-cyan-400 to-cyan-300', valColor: 'text-red-400' },
-    { icon: <Zap className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Operátori Teljesítmény', val: '9 terület', sub: 'Szerelés · Tekercselő · Mérő', color: 'from-pink-500 to-pink-400' },
-    { icon: <DatabaseZap className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'SAP Import', val: '164,629', sub: 'sor feldolgozva', color: 'from-teal-500 to-teal-400' },
-    { icon: <Factory className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'War Room', val: 'Élő', sub: 'Nyomtatásra kész', color: 'from-orange-500 to-orange-400' },
-    { icon: <AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-red-400" strokeWidth={1.5} />, title: 'Anomália detektálva', val: '02.15', sub: 'Alacsony teljesítmény hét', color: 'from-red-500 to-red-400', highlight: true, valColor: 'text-red-400' },
+    { icon: <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: t(d.dailyMinutes, lang), val: '25,820', sub: t(d.dailyMinSub, lang), color: 'from-blue-500 to-blue-400' },
+    { icon: <Users className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: t(d.headcount, lang), val: t(d.headcountVal, lang), sub: t(d.headcountSub, lang), color: 'from-purple-600 to-purple-400' },
+    { icon: <Package className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: t(d.delivered, lang), val: t(d.deliveredVal, lang), sub: t(d.deliveredSub, lang), color: 'from-green-500 to-green-400' },
+    { icon: <FolderKanban className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: t(d.allocation, lang), val: 'CW10', sub: t(d.allocationSub, lang), color: 'from-amber-500 to-amber-400' },
+    { icon: <ScanSearch className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: t(d.prodTracking, lang), val: t(d.prodTrackVal, lang), sub: t(d.prodTrackSub, lang), color: 'from-cyan-400 to-cyan-300', valColor: 'text-red-400' },
+    { icon: <Zap className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: t(d.operatorPerf, lang), val: t(d.operatorPerfVal, lang), sub: t(d.operatorPerfSub, lang), color: 'from-pink-500 to-pink-400' },
+    { icon: <DatabaseZap className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: t(d.sapImport, lang), val: '164,629', sub: t(d.sapImportSub, lang), color: 'from-teal-500 to-teal-400' },
+    { icon: <Factory className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: t(d.warRoom, lang), val: t(d.warRoomVal, lang), sub: t(d.warRoomSub, lang), color: 'from-orange-500 to-orange-400' },
+    { icon: <AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-red-400" strokeWidth={1.5} />, title: t(d.anomalyDetected, lang), val: '02.15', sub: t(d.anomalySub, lang), color: 'from-red-500 to-red-400', highlight: true, valColor: 'text-red-400' },
   ];
 
   const forecastCards = [
-    { title: '▲ Beérkező rendelések', val: '12,400', unit: 'db', sub: 'CW11 · következő hét igény', bar: 80, barColor: 'from-cyan-400 to-purple-400', note: 'vs kapacitás: 82%' },
-    { title: '⚠ HC Kalkulátor', val: '−8 fő', unit: '', sub: 'Várható létszámhiány · C műszak · kedd', bar: 65, barColor: 'from-amber-500 to-red-500', note: 'Rendelési igény > elérhető kapacitás', alert: true, badge: 'Headcount Alert' },
-    { title: '◎ Napi cél perc', val: '28,000', unit: 'min', sub: 'fallback target · heti nincs beállítva', bar: 92, barColor: 'from-green-500 to-cyan-300', note: 'Elérhető: 25,820 perc (92.2%)' },
-    { title: '€ EUR Bevétel becslés', val: '~34,000', unit: '€', sub: 'Siemens DC + No Siemens + Él tekercselés', bar: 88, barColor: 'from-green-500 to-green-400', note: 'Az előző hét átlagán alapul' },
+    { title: t(d.incomingOrders, lang), val: '12,400', unit: lang === 'hu' ? 'db' : lang === 'de' ? 'Stk.' : 'pcs', sub: t(d.incomingOrdersSub, lang), bar: 80, barColor: 'from-cyan-400 to-purple-400', note: t(d.incomingOrdersNote, lang) },
+    { title: t(d.hcCalculator, lang), val: t(d.hcVal, lang), unit: '', sub: t(d.hcSub, lang), bar: 65, barColor: 'from-amber-500 to-red-500', note: t(d.hcNote, lang), alert: true, badge: t(d.headcountAlert, lang) },
+    { title: t(d.dailyTargetMin, lang), val: '28,000', unit: 'min', sub: t(d.dailyTargetSub, lang), bar: 92, barColor: 'from-green-500 to-cyan-300', note: t(d.dailyTargetNote, lang) },
+    { title: t(d.eurRevenue, lang), val: '~34,000', unit: '€', sub: t(d.eurSub, lang), bar: 88, barColor: 'from-green-500 to-green-400', note: t(d.eurNote, lang) },
   ];
 
   const resCards = [
-    { icon: <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Napi Perces', status: '✓ OK' },
-    { icon: <Users className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Létszám', status: '✓ OK' },
-    { icon: <Package className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Leszállított', status: '✓ OK' },
-    { icon: <ScanSearch className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Követés', status: '✓ OK' },
+    { icon: <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: t(d.dailyMinutes, lang), status: '✓ OK' },
+    { icon: <Users className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: t(d.headcount, lang), status: '✓ OK' },
+    { icon: <Package className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: t(d.delivered, lang), status: '✓ OK' },
+    { icon: <ScanSearch className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: t(d.tracking, lang), status: '✓ OK' },
     { icon: <Cloud className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Cloud', status: '✓ Live' },
   ];
 
@@ -339,14 +342,14 @@ const Demo = () => {
                 AINOVA
               </motion.div>
               <div className="font-space text-[10px] md:text-xs tracking-[0.25em] text-ainova-muted uppercase">
-                Cloud Intelligence · Industry 4.0
+                {t(d.cloudIntelligence, lang)}
               </div>
               <div className="text-sm md:text-lg text-foreground/60 font-light max-w-[400px] px-4">
-                From 164,629 SAP rows to one decision.
+                {t(d.fromSapRows, lang)}
               </div>
               <button onClick={startDemo}
                 className="mt-2 md:mt-4 px-8 md:px-12 py-3 md:py-4 rounded btn-gradient text-ainova-bright font-syne font-bold text-xs md:text-sm tracking-[0.15em] uppercase hover:-translate-y-0.5 hover:shadow-[0_20px_60px_rgba(0,212,255,0.3)] transition-all relative overflow-hidden">
-                ▶ &nbsp; Watch it work
+                {t(d.watchItWork, lang)}
               </button>
             </motion.div>
           )}
@@ -360,17 +363,17 @@ const Demo = () => {
                 style={{ background: 'rgba(7,13,26,0.95)', boxShadow: '0 40px 120px rgba(0,0,0,0.6), 0 0 60px rgba(0,212,255,0.05)' }}>
                 <div className="text-center mb-6 md:mb-8">
                   <div className="font-syne font-extrabold text-2xl md:text-3xl tracking-[0.12em] gradient-text">AINOVA</div>
-                  <div className="font-space text-[8px] md:text-[9px] tracking-[0.2em] text-ainova-muted uppercase mt-1">Advanced Intelligent Network Operations</div>
+                  <div className="font-space text-[8px] md:text-[9px] tracking-[0.2em] text-ainova-muted uppercase mt-1">{t(d.advancedNetwork, lang)}</div>
                 </div>
                 <div className="mb-4 md:mb-5">
-                  <label className="block text-xs font-medium text-ainova-muted mb-2 tracking-[0.05em]">Felhasználónév</label>
+                  <label className="block text-xs font-medium text-ainova-muted mb-2 tracking-[0.05em]">{t(d.username, lang)}</label>
                   <input readOnly value={loginUser} className={`w-full px-4 py-3 md:py-3.5 rounded-lg border font-space text-sm text-foreground outline-none transition-all ${loginUser ? 'border-ainova-accent2 shadow-[0_0_20px_rgba(0,212,255,0.1)]' : 'border-foreground/10'}`} style={{ background: 'rgba(255,255,255,0.06)' }} />
                 </div>
                 <div className="mb-4 md:mb-5">
-                  <label className="block text-xs font-medium text-ainova-muted mb-2 tracking-[0.05em]">Jelszó</label>
+                  <label className="block text-xs font-medium text-ainova-muted mb-2 tracking-[0.05em]">{t(d.password, lang)}</label>
                   <input readOnly type="password" value={loginPass} className={`w-full px-4 py-3 md:py-3.5 rounded-lg border font-space text-sm text-foreground outline-none transition-all ${loginPass ? 'border-ainova-accent2 shadow-[0_0_20px_rgba(0,212,255,0.1)]' : 'border-foreground/10'}`} style={{ background: 'rgba(255,255,255,0.06)' }} />
                 </div>
-                <button className={`w-full py-3.5 md:py-4 rounded-lg text-ainova-bright font-syne font-bold text-sm tracking-[0.1em] ${loginBtnText !== 'Bejelentkezés' ? 'bg-gradient-to-r from-ainova-accent2 to-green-500' : 'bg-gradient-to-r from-blue-600 to-purple-600'}`}>
+                <button className={`w-full py-3.5 md:py-4 rounded-lg text-ainova-bright font-syne font-bold text-sm tracking-[0.1em] ${loginBtnText !== t(d.login, lang) ? 'bg-gradient-to-r from-ainova-accent2 to-green-500' : 'bg-gradient-to-r from-blue-600 to-purple-600'}`}>
                   {loginBtnText}
                 </button>
               </motion.div>
@@ -437,8 +440,8 @@ const Demo = () => {
             <motion.div key="chart" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="px-4 md:px-10 flex flex-col gap-3 md:gap-4 items-center w-full max-w-[860px] overflow-y-auto max-h-[80vh]">
               <div className="rounded-xl border border-border p-4 md:p-6 w-full" style={{ background: 'rgba(7,13,26,0.9)' }}>
-                <div className="font-syne text-xs md:text-sm font-bold tracking-[0.1em] uppercase text-ainova-accent2 text-center mb-1">— PERC LEADÁSOK —</div>
-                <div className="text-[10px] md:text-xs text-ainova-muted text-center mb-3 md:mb-5">Napi kimutatás · 02.12 – 03.03</div>
+                <div className="font-syne text-xs md:text-sm font-bold tracking-[0.1em] uppercase text-ainova-accent2 text-center mb-1">{t(d.minuteDeliveries, lang)}</div>
+                <div className="text-[10px] md:text-xs text-ainova-muted text-center mb-3 md:mb-5">{t(d.dailyReport, lang)}</div>
                 <canvas ref={chartCanvasRef} className="w-full" style={{ height: 220 }} />
               </div>
               <motion.div
@@ -449,8 +452,8 @@ const Demo = () => {
                 style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)' }}>
                 <div className="flex-shrink-0"><AlertTriangle className="w-6 h-6 md:w-8 md:h-8 text-red-400" strokeWidth={1.5} /></div>
                 <div className="min-w-0">
-                  <div className="font-syne font-bold text-xs md:text-base text-red-400 mb-1">Anomália: 2026.02.15</div>
-                  <div className="text-[10px] md:text-sm text-ainova-muted">Az adatok automatikusan összevonódtak → A műszak táppénz rátája megkétszereződött.</div>
+                  <div className="font-syne font-bold text-xs md:text-base text-red-400 mb-1">{t(d.anomalyDate, lang)}</div>
+                  <div className="text-[10px] md:text-sm text-ainova-muted">{t(d.anomalyDesc, lang)}</div>
                 </div>
                 <div className="ml-auto text-right flex-shrink-0">
                   <div className="font-space text-xl md:text-3xl font-bold text-red-400">+47%</div>
@@ -464,7 +467,7 @@ const Demo = () => {
           {currentScene === 5 && (
             <motion.div key="forecast" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               className="px-4 md:px-10 flex flex-col gap-3 md:gap-4 items-center w-full max-w-[800px] overflow-y-auto max-h-[80vh]">
-              <div className="font-syne text-[11px] md:text-[13px] tracking-[0.2em] uppercase text-ainova-muted">Következő hét előrejelzés</div>
+              <div className="font-syne text-[11px] md:text-[13px] tracking-[0.2em] uppercase text-ainova-muted">{t(d.nextWeekForecast, lang)}</div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 w-full">
                 {forecastCards.map((c, i) => (
                   <motion.div key={i}
@@ -493,7 +496,7 @@ const Demo = () => {
               className="flex flex-col items-center gap-4 md:gap-5 px-4 overflow-y-auto max-h-[80vh]">
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: resolutionStep >= 1 ? 1 : 0 }}
                 className="font-syne text-xs md:text-sm font-bold tracking-[0.2em] uppercase text-ainova-muted">
-                Rendszer egyensúlyban
+                {t(d.systemBalanced, lang)}
               </motion.div>
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: resolutionStep >= 1 ? 1 : 0 }}
                 className="grid grid-cols-5 gap-1.5 md:gap-2.5 w-full max-w-[700px]">
@@ -511,14 +514,14 @@ const Demo = () => {
                 animate={{ opacity: resolutionStep >= 6 ? 1 : 0, y: resolutionStep >= 6 ? 0 : 30 }}
                 transition={{ duration: 0.8 }}
                 className="font-syne text-xl md:text-3xl font-extrabold text-center tracking-[0.05em] leading-[1.2] gradient-text max-w-[600px]">
-                Silence the noise.<br />See the truth.
+                {t(d.silenceNoise, lang)}<br />{t(d.seeTheTruth, lang)}
               </motion.div>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: resolutionStep >= 6 ? 1 : 0 }}
                 className="flex flex-col md:flex-row gap-3 md:gap-4">
                 <a href="mailto:info@ainovacloud.com" className="px-6 md:px-9 py-3 md:py-3.5 rounded btn-gradient text-ainova-bright font-syne font-bold text-[11px] md:text-[13px] tracking-[0.1em] uppercase no-underline transition-all text-center">
-                  Kapcsolatfelvétel
+                  {t(d.getInTouch, lang)}
                 </a>
                 <Link to="/" className="px-6 md:px-9 py-3 md:py-3.5 rounded border border-border text-ainova-muted font-syne font-bold text-[11px] md:text-[13px] tracking-[0.1em] uppercase no-underline hover:border-foreground/30 hover:text-foreground transition-all text-center">
                   ainovacloud.com ↗
