@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import { BarChart3, Users, Package, FolderKanban, ScanSearch, Zap, DatabaseZap, Factory, AlertTriangle, KeyRound, ShieldCheck, UserCheck, Cloud } from 'lucide-react';
 
 const SCENES = ['intro', 'login', 'electron', 'dashboard', 'chart', 'forecast', 'resolution'] as const;
 
@@ -232,37 +233,37 @@ const Demo = () => {
   }
 
   const dashCards = [
-    { icon: '📊', title: 'Napi Perces', val: '25,820', sub: 'perc leadva · 92.2% cél', color: 'from-blue-500 to-blue-400' },
-    { icon: '👥', title: 'Létszám', val: '98 fő', sub: '3 műszak aktív', color: 'from-purple-600 to-purple-400' },
-    { icon: '📦', title: 'Leszállított', val: '2,061 db', sub: '30,647 EUR · ma', color: 'from-green-500 to-green-400' },
-    { icon: '🗂️', title: 'Allokáció', val: 'CW10', sub: 'Heti terv vs teljesítés', color: 'from-amber-500 to-amber-400' },
-    { icon: '🔍', title: 'Termeléskövetés', val: '⚠ 3 kritikus', sub: '5+ óra várakozás', color: 'from-cyan-400 to-cyan-300', valColor: 'text-red-400' },
-    { icon: '⚡', title: 'Operátori Teljesítmény', val: '9 terület', sub: 'Szerelés · Tekercselő · Mérő', color: 'from-pink-500 to-pink-400' },
-    { icon: '📥', title: 'SAP Import', val: '164,629', sub: 'sor feldolgozva', color: 'from-teal-500 to-teal-400' },
-    { icon: '🏭', title: 'War Room', val: 'Élő', sub: 'Nyomtatásra kész', color: 'from-orange-500 to-orange-400' },
-    { icon: '🚨', title: 'Anomália detektálva', val: '02.15', sub: 'Alacsony teljesítmény hét', color: 'from-red-500 to-red-400', highlight: true, valColor: 'text-red-400' },
+    { icon: <BarChart3 className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Napi Perces', val: '25,820', sub: 'perc leadva · 92.2% cél', color: 'from-blue-500 to-blue-400' },
+    { icon: <Users className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Létszám', val: '98 fő', sub: '3 műszak aktív', color: 'from-purple-600 to-purple-400' },
+    { icon: <Package className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Leszállított', val: '2,061 db', sub: '30,647 EUR · ma', color: 'from-green-500 to-green-400' },
+    { icon: <FolderKanban className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Allokáció', val: 'CW10', sub: 'Heti terv vs teljesítés', color: 'from-amber-500 to-amber-400' },
+    { icon: <ScanSearch className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Termeléskövetés', val: '⚠ 3 kritikus', sub: '5+ óra várakozás', color: 'from-cyan-400 to-cyan-300', valColor: 'text-red-400' },
+    { icon: <Zap className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'Operátori Teljesítmény', val: '9 terület', sub: 'Szerelés · Tekercselő · Mérő', color: 'from-pink-500 to-pink-400' },
+    { icon: <DatabaseZap className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'SAP Import', val: '164,629', sub: 'sor feldolgozva', color: 'from-teal-500 to-teal-400' },
+    { icon: <Factory className="w-5 h-5 md:w-6 md:h-6 text-ainova-accent2" strokeWidth={1.5} />, title: 'War Room', val: 'Élő', sub: 'Nyomtatásra kész', color: 'from-orange-500 to-orange-400' },
+    { icon: <AlertTriangle className="w-5 h-5 md:w-6 md:h-6 text-red-400" strokeWidth={1.5} />, title: 'Anomália detektálva', val: '02.15', sub: 'Alacsony teljesítmény hét', color: 'from-red-500 to-red-400', highlight: true, valColor: 'text-red-400' },
   ];
 
   const forecastCards = [
     { title: '▲ Beérkező rendelések', val: '12,400', unit: 'db', sub: 'CW11 · következő hét igény', bar: 80, barColor: 'from-cyan-400 to-purple-400', note: 'vs kapacitás: 82%' },
     { title: '⚠ HC Kalkulátor', val: '−8 fő', unit: '', sub: 'Várható létszámhiány · C műszak · kedd', bar: 65, barColor: 'from-amber-500 to-red-500', note: 'Rendelési igény > elérhető kapacitás', alert: true, badge: 'Headcount Alert' },
     { title: '◎ Napi cél perc', val: '28,000', unit: 'min', sub: 'fallback target · heti nincs beállítva', bar: 92, barColor: 'from-green-500 to-cyan-300', note: 'Elérhető: 25,820 perc (92.2%)' },
-    { title: '💶 EUR Bevétel becslés', val: '~34,000', unit: '€', sub: 'Siemens DC + No Siemens + Él tekercselés', bar: 88, barColor: 'from-green-500 to-green-400', note: 'Az előző hét átlagán alapul' },
+    { title: '€ EUR Bevétel becslés', val: '~34,000', unit: '€', sub: 'Siemens DC + No Siemens + Él tekercselés', bar: 88, barColor: 'from-green-500 to-green-400', note: 'Az előző hét átlagán alapul' },
   ];
 
   const resCards = [
-    { icon: '📊', label: 'Napi Perces', status: '✓ OK' },
-    { icon: '👥', label: 'Létszám', status: '✓ OK' },
-    { icon: '📦', label: 'Leszállított', status: '✓ OK' },
-    { icon: '🔍', label: 'Követés', status: '✓ OK' },
-    { icon: '☁', label: 'Cloud', status: '✓ Live' },
+    { icon: <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Napi Perces', status: '✓ OK' },
+    { icon: <Users className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Létszám', status: '✓ OK' },
+    { icon: <Package className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Leszállított', status: '✓ OK' },
+    { icon: <ScanSearch className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Követés', status: '✓ OK' },
+    { icon: <Cloud className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'Cloud', status: '✓ Live' },
   ];
 
   const authLabels = [
-    { icon: '🔑', label: 'JWT Token', value: 'eyJhbGc...' },
-    { icon: '🔐', label: 'bcrypt Hash', value: '$2b$12$...' },
-    { icon: '✓', label: 'Role: Admin', value: 'Svasznik Tibor' },
-    { icon: '☁', label: 'DB Connect', value: 'SQL Server ✓' },
+    { icon: <KeyRound className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'JWT Token', value: 'eyJhbGc...' },
+    { icon: <ShieldCheck className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'bcrypt Hash', value: '$2b$12$...' },
+    { icon: <UserCheck className="w-4 h-4 md:w-5 md:h-5 text-green-400" strokeWidth={1.5} />, label: 'Role: Admin', value: 'Svasznik Tibor' },
+    { icon: <Cloud className="w-4 h-4 md:w-5 md:h-5 text-ainova-accent2" strokeWidth={1.5} />, label: 'DB Connect', value: 'SQL Server ✓' },
   ];
 
   return (
@@ -421,7 +422,7 @@ const Demo = () => {
                     className={`rounded-xl p-3 md:p-5 border border-border relative overflow-hidden cursor-default transition-all hover:border-ainova-accent2/30 ${c.highlight ? 'border-red-500/50' : ''}`}
                     style={{ background: 'rgba(255,255,255,0.04)' }}>
                     <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${c.color}`} />
-                    <div className="text-lg md:text-2xl mb-1 md:mb-2">{c.icon}</div>
+                    <div className="mb-1 md:mb-2">{c.icon}</div>
                     <div className="text-[9px] md:text-[11px] font-semibold tracking-[0.08em] uppercase text-ainova-muted mb-0.5 md:mb-1">{c.title}</div>
                     <div className={`font-syne text-base md:text-[22px] font-bold ${c.valColor || 'text-foreground'}`}>{c.val}</div>
                     <div className="text-[9px] md:text-[11px] text-ainova-muted mt-0.5 md:mt-1">{c.sub}</div>
@@ -446,7 +447,7 @@ const Demo = () => {
                 transition={{ duration: 0.6 }}
                 className="rounded-xl p-4 md:p-5 w-full flex items-center gap-3 md:gap-6"
                 style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)' }}>
-                <div className="text-xl md:text-3xl flex-shrink-0">🔴</div>
+                <div className="flex-shrink-0"><AlertTriangle className="w-6 h-6 md:w-8 md:h-8 text-red-400" strokeWidth={1.5} /></div>
                 <div className="min-w-0">
                   <div className="font-syne font-bold text-xs md:text-base text-red-400 mb-1">Anomália: 2026.02.15</div>
                   <div className="text-[10px] md:text-sm text-ainova-muted">Az adatok automatikusan összevonódtak → A műszak táppénz rátája megkétszereződött.</div>
@@ -499,7 +500,7 @@ const Demo = () => {
                 {resCards.map((c, i) => (
                   <div key={i} className={`rounded-lg p-2 md:p-4 text-center border transition-all duration-500 ${resolutionStep >= i + 2 ? 'bg-green-500/[0.08] border-green-500/40' : 'border-border'}`}
                     style={{ background: resolutionStep >= i + 2 ? undefined : 'rgba(255,255,255,0.04)' }}>
-                    <div className="text-base md:text-xl mb-1">{c.icon}</div>
+                    <div className="flex justify-center mb-1">{c.icon}</div>
                     <div className="text-[8px] md:text-[10px] text-ainova-muted">{c.label}</div>
                     <div className={`font-space text-[8px] md:text-[9px] mt-0.5 md:mt-1 text-green-400 transition-opacity ${resolutionStep >= i + 2 ? 'opacity-100' : 'opacity-0'}`}>{c.status}</div>
                   </div>
