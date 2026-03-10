@@ -1,50 +1,41 @@
 import { useEffect, useRef } from 'react';
 
 interface Neuron {
-  x: number; y: number; vx: number; vy: number;
+  x: number; y: number; z: number;
+  vx: number; vy: number;
   size: number; phase: number; ps: number;
-  col: string; L: number;
-  cfg: typeof DESKTOP_CFG[number];
+  col: string; opMax: number;
 }
 
-const DESKTOP_CFG = [
-  { count: 14, sMin: 0.12, sMax: 0.5, spd: 0.04, opMax: 0.12, psMin: 0.002, psMax: 0.006,
-    dist: 80, lineOp: 0.02, lw: 0.3,
-    colors: ['100,130,180', '80,110,160', '90,120,170'] },
-  { count: 10, sMin: 0.4, sMax: 1.0, spd: 0.08, opMax: 0.2, psMin: 0.003, psMax: 0.008,
-    dist: 110, lineOp: 0.035, lw: 0.35,
-    colors: ['100,160,210', '80,180,200', '110,140,200'] },
-  { count: 6, sMin: 0.8, sMax: 1.6, spd: 0.14, opMax: 0.32, psMin: 0.004, psMax: 0.01,
-    dist: 140, lineOp: 0.05, lw: 0.4,
-    colors: ['130,175,230', '90,190,210', '150,140,210'] }
+const COLORS = [
+  '100,140,200', '80,160,210', '120,150,220',
+  '90,180,200', '140,160,230', '110,170,215',
+  '130,145,210', '95,175,205',
 ];
 
-const MOBILE_CFG = [
-  { count: 6, sMin: 0.15, sMax: 0.4, spd: 0.03, opMax: 0.1, psMin: 0.002, psMax: 0.005,
-    dist: 60, lineOp: 0.02, lw: 0.3,
-    colors: ['100,130,180', '80,110,160'] },
-  { count: 4, sMin: 0.4, sMax: 0.9, spd: 0.06, opMax: 0.16, psMin: 0.003, psMax: 0.007,
-    dist: 85, lineOp: 0.03, lw: 0.35,
-    colors: ['100,160,210', '80,180,200'] },
-  { count: 3, sMin: 0.8, sMax: 1.3, spd: 0.1, opMax: 0.25, psMin: 0.004, psMax: 0.008,
-    dist: 110, lineOp: 0.04, lw: 0.4,
-    colors: ['130,175,230', '90,190,210'] }
-];
+function createNeuron(W: number, H: number, init: boolean): Neuron {
+  const z = Math.random(); // 0 = far, 1 = near
+  const depthScale = 0.15 + z * 0.85;
+  const speed = 0.01 + z * 0.12;
 
-function createNeuron(layerIdx: number, W: number, H: number, init: boolean, cfg: typeof DESKTOP_CFG): Neuron {
-  const c = cfg[layerIdx];
   return {
     x: Math.random() * W,
-    y: init ? Math.random() * H : (Math.random() < 0.5 ? -8 : H + 8),
-    vx: (Math.random() - 0.5) * c.spd,
-    vy: (Math.random() - 0.5) * c.spd,
-    size: c.sMin + Math.random() * (c.sMax - c.sMin),
+    y: init ? Math.random() * H : (Math.random() < 0.5 ? -10 : H + 10),
+    z,
+    vx: (Math.random() - 0.5) * speed,
+    vy: (Math.random() - 0.5) * speed,
+    size: (0.3 + Math.random() * 1.8) * depthScale,
     phase: Math.random() * Math.PI * 2,
-    ps: c.psMin + Math.random() * (c.psMax - c.psMin),
-    col: c.colors[Math.floor(Math.random() * c.colors.length)],
-    L: layerIdx, cfg: c,
+    ps: 0.002 + Math.random() * 0.008,
+    col: COLORS[Math.floor(Math.random() * COLORS.length)],
+    opMax: (0.06 + z * 0.3) * (0.7 + Math.random() * 0.3),
   };
 }
+
+const DESKTOP_COUNT = 45;
+const MOBILE_COUNT = 18;
+const CONNECT_DIST = 130;
+const LINE_OP_MAX = 0.04;
 
 const NeuronCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -56,7 +47,7 @@ const NeuronCanvas = () => {
     if (!ctx) return;
 
     const isMobile = window.innerWidth < 768;
-    const LAYER_CFG = isMobile ? MOBILE_CFG : DESKTOP_CFG;
+    const count = isMobile ? MOBILE_COUNT : DESKTOP_COUNT;
 
     let W = canvas.width = window.innerWidth;
     let H = canvas.height = window.innerHeight;
@@ -65,11 +56,12 @@ const NeuronCanvas = () => {
     const targetInterval = isMobile ? 50 : 33;
 
     const neurons: Neuron[] = [];
-    LAYER_CFG.forEach((_, li) => {
-      for (let n = 0; n < LAYER_CFG[li].count; n++) {
-        neurons.push(createNeuron(li, W, H, true, LAYER_CFG));
-      }
-    });
+    for (let i = 0; i < count; i++) {
+      neurons.push(createNeuron(W, H, true));
+    }
+
+    // Sort by depth so far ones render first
+    neurons.sort((a, b) => a.z - b.z);
 
     let resizeTimeout: number;
     const handleResize = () => {
@@ -81,14 +73,6 @@ const NeuronCanvas = () => {
     };
     window.addEventListener('resize', handleResize);
 
-    function tick(n: Neuron): number {
-      n.x += n.vx; n.y += n.vy; n.phase += n.ps;
-      if (n.x < -12 || n.x > W + 12 || n.y < -12 || n.y > H + 12) {
-        Object.assign(n, createNeuron(n.L, W, H, false, LAYER_CFG));
-      }
-      return n.cfg.opMax * (0.3 + 0.7 * Math.sin(n.phase));
-    }
-
     function loop(time: number) {
       animId = requestAnimationFrame(loop);
       if (time - lastTime < targetInterval) return;
@@ -96,36 +80,51 @@ const NeuronCanvas = () => {
 
       ctx!.clearRect(0, 0, W, H);
 
-      let idx = 0;
-      for (const cfg of LAYER_CFG) {
-        const slice = neurons.slice(idx, idx + cfg.count);
-        idx += cfg.count;
-        for (let i = 0; i < slice.length; i++) {
-          for (let j = i + 1; j < slice.length; j++) {
-            const dx = slice[i].x - slice[j].x;
-            const dy = slice[i].y - slice[j].y;
-            const d2 = dx * dx + dy * dy;
-            const maxD = cfg.dist;
-            if (d2 < maxD * maxD) {
-              const d = Math.sqrt(d2);
-              ctx!.beginPath();
-              ctx!.moveTo(slice[i].x, slice[i].y);
-              ctx!.lineTo(slice[j].x, slice[j].y);
-              ctx!.strokeStyle = `rgba(${slice[i].col},${(1 - d / maxD) * cfg.lineOp})`;
-              ctx!.lineWidth = cfg.lw;
-              ctx!.stroke();
-            }
+      // Update positions
+      for (const n of neurons) {
+        n.x += n.vx;
+        n.y += n.vy;
+        n.phase += n.ps;
+
+        if (n.x < -20 || n.x > W + 20 || n.y < -20 || n.y > H + 20) {
+          Object.assign(n, createNeuron(W, H, false));
+        }
+      }
+
+      // Draw connections (only between nearby depth neurons)
+      for (let i = 0; i < neurons.length; i++) {
+        for (let j = i + 1; j < neurons.length; j++) {
+          const a = neurons[i], b = neurons[j];
+          const dz = Math.abs(a.z - b.z);
+          if (dz > 0.3) continue; // Only connect similar depth
+
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          const d2 = dx * dx + dy * dy;
+          const maxD = CONNECT_DIST * (0.5 + (a.z + b.z) / 2 * 0.5);
+          
+          if (d2 < maxD * maxD) {
+            const d = Math.sqrt(d2);
+            const avgZ = (a.z + b.z) / 2;
+            const op = (1 - d / maxD) * LINE_OP_MAX * (0.2 + avgZ * 0.8);
+            ctx!.beginPath();
+            ctx!.moveTo(a.x, a.y);
+            ctx!.lineTo(b.x, b.y);
+            ctx!.strokeStyle = `rgba(${a.col},${op})`;
+            ctx!.lineWidth = 0.3 + avgZ * 0.3;
+            ctx!.stroke();
           }
         }
       }
 
-      neurons.forEach(n => {
-        const op = tick(n);
+      // Draw neurons
+      for (const n of neurons) {
+        const op = n.opMax * (0.4 + 0.6 * Math.sin(n.phase));
         ctx!.beginPath();
         ctx!.arc(n.x, n.y, n.size, 0, Math.PI * 2);
         ctx!.fillStyle = `rgba(${n.col},${op})`;
         ctx!.fill();
-      });
+      }
     }
 
     animId = requestAnimationFrame(loop);
@@ -139,7 +138,7 @@ const NeuronCanvas = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-[1]"
-      style={{ opacity: 0.7 }}
+      style={{ opacity: 0.8 }}
     />
   );
 };
