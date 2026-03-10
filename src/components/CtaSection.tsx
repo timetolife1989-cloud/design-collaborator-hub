@@ -7,8 +7,8 @@ const CtaSection = () => {
   const c = translations.cta;
 
   return (
-    <section className="py-24 md:py-40 px-6 md:px-16 text-center relative border-t border-border overflow-hidden" id="contact">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] pointer-events-none" style={{ background: 'radial-gradient(ellipse, rgba(59,130,246,0.06) 0%, transparent 70%)' }} />
+    <section className="py-24 md:py-40 px-6 md:px-16 text-center relative overflow-hidden" id="contact">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] pointer-events-none" style={{ background: 'radial-gradient(ellipse, hsla(220, 70%, 55%, 0.04) 0%, transparent 70%)' }} />
 
       <motion.div
         initial={{ opacity: 0, y: 30 }}
@@ -24,18 +24,18 @@ const CtaSection = () => {
           {t(c.subtitle, lang)}
         </p>
 
-        <div className="flex max-w-[420px] mx-auto border border-border transition-all focus-within:border-ainova-accent2/30 focus-within:shadow-[0_0_30px_rgba(6,182,212,0.06)]">
+        <div className="flex max-w-[420px] mx-auto rounded-xl overflow-hidden border border-border/50 transition-all duration-300 focus-within:border-ainova-accent2/20 focus-within:shadow-[0_0_24px_rgba(90,180,200,0.04)]" style={{ background: 'hsla(220, 30%, 10%, 0.4)' }}>
           <input
             type="email"
             placeholder={t(c.placeholder, lang)}
-            className="flex-1 bg-foreground/[0.02] border-none outline-none px-6 py-4 text-foreground font-space text-[0.75rem] placeholder:text-foreground/10"
+            className="flex-1 bg-transparent border-none outline-none px-6 py-4 text-foreground font-space text-[0.75rem] placeholder:text-foreground/15"
           />
-          <button className="font-space text-[0.72rem] tracking-[0.08em] uppercase px-6 py-4 btn-gradient text-ainova-bright border-none cursor-pointer transition-opacity hover:opacity-85 whitespace-nowrap">
+          <button className="font-space text-[0.72rem] tracking-[0.08em] uppercase px-6 py-4 btn-gradient text-ainova-bright border-none cursor-pointer transition-opacity duration-300 hover:opacity-85 whitespace-nowrap rounded-r-xl">
             {t(c.send, lang)}
           </button>
         </div>
 
-        <p className="mt-5 font-space text-[0.65rem] text-ainova-accent/50 tracking-[0.05em] leading-[1.8]">
+        <p className="mt-5 font-space text-[0.65rem] text-ainova-accent/40 tracking-[0.05em] leading-[1.8]">
           {t(c.directContact, lang)}
         </p>
       </motion.div>

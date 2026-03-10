@@ -27,7 +27,7 @@ const ModulesSection = () => {
         </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-px border border-border" style={{ background: 'hsl(var(--border))' }}>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {m.items.map((item, i) => {
           const Icon = icons[i];
           return (
@@ -37,13 +37,13 @@ const ModulesSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-12%' }}
               transition={{ duration: 0.65, delay: i * 0.07 }}
-              className="bg-background p-10 transition-all relative overflow-hidden group cursor-default"
+              className="glass-card p-8 transition-all duration-300 relative overflow-hidden group cursor-default hover:border-ainova-accent2/15"
             >
-              <div className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--ainova-accent2)), transparent)' }} />
+              <div className="absolute top-0 left-0 right-0 h-px opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: 'linear-gradient(90deg, transparent, hsl(var(--ainova-accent2) / 0.4), transparent)' }} />
               <Icon className="w-6 h-6 mb-6 text-ainova-accent2" strokeWidth={1.5} />
               <div className="font-syne font-bold text-[0.95rem] text-ainova-bright mb-2.5 tracking-[0.02em]">{t(item.name, lang)}</div>
               <div className="text-[0.82rem] text-ainova-muted leading-[1.8]">{t(item.desc, lang)}</div>
-              <span className="inline-block mt-5 font-space text-[0.58rem] tracking-[0.1em] uppercase text-ainova-accent2 border border-ainova-accent2/15 px-2.5 py-1">{t(item.tag, lang)}</span>
+              <span className="inline-block mt-5 font-space text-[0.58rem] tracking-[0.1em] uppercase text-ainova-accent2/70 border border-ainova-accent2/10 rounded-md px-2.5 py-1">{t(item.tag, lang)}</span>
             </motion.div>
           );
         })}

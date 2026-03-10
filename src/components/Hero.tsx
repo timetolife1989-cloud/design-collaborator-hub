@@ -25,14 +25,14 @@ const Hero = () => {
         transition={{ duration: 0.6, delay: 2.0 }}
         className="font-space text-[clamp(0.9rem,2vw,1.2rem)] tracking-[0.12em] text-ainova-muted mb-8"
       >
-        <em className="not-italic text-foreground/60">{t(h.silenceNoise, lang)}</em> &nbsp;{t(h.seeTheTruth, lang)}
+        <em className="not-italic text-foreground/50">{t(h.silenceNoise, lang)}</em> &nbsp;{t(h.seeTheTruth, lang)}
       </motion.p>
 
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 2.3 }}
-        className="max-w-[560px] text-base text-ainova-muted/70 leading-[1.9] mb-14"
+        className="max-w-[560px] text-base text-ainova-muted/60 leading-[1.9] mb-14"
       >
         {t(h.desc, lang)}
       </motion.p>
@@ -43,10 +43,10 @@ const Hero = () => {
         transition={{ duration: 0.6, delay: 2.5 }}
         className="flex gap-4 flex-wrap justify-center"
       >
-        <Link to="/demo" className="font-space text-[0.78rem] tracking-[0.1em] uppercase px-10 py-4 btn-gradient text-ainova-bright no-underline transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_40px_rgba(59,130,246,0.35)] relative overflow-hidden">
+        <Link to="/demo" className="font-space text-[0.78rem] tracking-[0.1em] uppercase px-10 py-4 btn-gradient text-ainova-bright no-underline transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(100,160,220,0.2)] rounded-lg relative overflow-hidden">
           <span className="relative z-10">{t(h.watchItWork, lang)}</span>
         </Link>
-        <a href="#modules" className="font-space text-[0.78rem] tracking-[0.1em] uppercase px-10 py-4 border border-border text-ainova-muted no-underline transition-all hover:border-ainova-accent/30 hover:text-foreground/60">
+        <a href="#modules" className="font-space text-[0.78rem] tracking-[0.1em] uppercase px-10 py-4 rounded-lg border border-border text-ainova-muted no-underline transition-all duration-300 hover:border-ainova-accent/20 hover:text-foreground/50">
           {t(h.exploreModules, lang)}
         </a>
       </motion.div>
@@ -57,7 +57,7 @@ const Hero = () => {
         transition={{ duration: 0.6, delay: 3.0 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center"
       >
-        <div className="w-px h-[80px]" style={{ background: 'linear-gradient(to bottom, transparent, hsl(var(--ainova-accent2)))', animation: 'scrollPulse 2s ease infinite' }} />
+        <div className="w-px h-[80px]" style={{ background: 'linear-gradient(to bottom, transparent, hsl(var(--ainova-accent2)))', animation: 'scrollPulse 2.5s ease infinite' }} />
       </motion.div>
     </section>
   );
