@@ -117,12 +117,17 @@ const NeuronCanvas = () => {
         }
       }
 
-      // Draw neurons
+      // Draw neurons as soft glows
       for (const n of neurons) {
         const op = n.opMax * (0.4 + 0.6 * Math.sin(n.phase));
+        const r = n.size * 3;
+        const grad = ctx!.createRadialGradient(n.x, n.y, 0, n.x, n.y, r);
+        grad.addColorStop(0, `rgba(${n.col},${op})`);
+        grad.addColorStop(0.3, `rgba(${n.col},${op * 0.4})`);
+        grad.addColorStop(1, `rgba(${n.col},0)`);
         ctx!.beginPath();
-        ctx!.arc(n.x, n.y, n.size, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(${n.col},${op})`;
+        ctx!.arc(n.x, n.y, r, 0, Math.PI * 2);
+        ctx!.fillStyle = grad;
         ctx!.fill();
       }
     }
