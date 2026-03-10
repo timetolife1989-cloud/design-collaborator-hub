@@ -8,13 +8,11 @@ const Navbar = () => {
   const n = translations.nav;
 
   return (
-    <nav className="flex items-center justify-between px-4 md:px-16 py-5 backdrop-blur-[40px] sticky top-0 z-[100] opacity-0 animate-[fadeIn_0.7s_ease_0.5s_forwards]"
+    <nav className="flex items-center justify-between px-4 md:px-16 py-5 backdrop-blur-2xl sticky top-0 z-[100] rounded-none opacity-0 animate-[fadeIn_0.7s_ease_0.5s_forwards]"
       style={{
-        background: 'linear-gradient(180deg, rgba(10,20,38,0.96) 0%, rgba(5,12,22,0.90) 100%)',
-        boxShadow: '0 1px 0 hsla(187 92% 47% / 0.05), 0 8px 32px rgba(0,0,0,0.6), 0 20px 60px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06), inset 0 -1px 0 rgba(0,0,0,0.2)',
-        borderBottom: '1px solid rgba(6,182,212,0.06)',
-        transform: 'perspective(1000px) rotateX(1deg)',
-        transformOrigin: 'top center'
+        background: 'hsla(222, 30%, 7%, 0.85)',
+        borderBottom: '1px solid hsla(220, 40%, 50%, 0.06)',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.3)',
       }}>
       <Link to="/" className="flex items-center gap-3 no-underline group">
         <div>
@@ -29,13 +27,13 @@ const Navbar = () => {
           ['#tech', t(n.stack, lang)],
           ['#contact', t(n.contact, lang)],
         ].map(([href, label]) =>
-          <li key={href}><a href={href} className="font-space text-[0.72rem] text-ainova-muted no-underline tracking-[0.1em] uppercase hover:text-ainova-accent2 transition-colors">{label}</a></li>
+          <li key={href}><a href={href} className="font-space text-[0.72rem] text-ainova-muted no-underline tracking-[0.1em] uppercase hover:text-ainova-accent2 transition-colors duration-300">{label}</a></li>
         )}
       </ul>
       <div className="flex items-center gap-4">
         <LanguageSelector />
-        <a href="#contact" className="font-space text-[0.72rem] px-6 py-2.5 border border-ainova-accent/40 text-ainova-accent no-underline tracking-[0.1em] uppercase transition-all hover:text-ainova-bright relative overflow-hidden group" style={{ background: 'rgba(59,130,246,0.04)' }}>
-          <span className="absolute inset-0 btn-gradient opacity-0 group-hover:opacity-100 transition-opacity" />
+        <a href="#contact" className="font-space text-[0.72rem] px-6 py-2.5 rounded-lg border border-ainova-accent/20 text-ainova-accent no-underline tracking-[0.1em] uppercase transition-all duration-300 hover:text-ainova-bright relative overflow-hidden group" style={{ background: 'hsla(220, 70%, 55%, 0.04)' }}>
+          <span className="absolute inset-0 btn-gradient opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
           <span className="relative z-10">{t(n.requestDemo, lang)}</span>
         </a>
       </div>

@@ -34,8 +34,8 @@ const TechSection = () => {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: i * 0.04, ease: [0.34, 1.56, 0.64, 1] }}
-            className="font-space text-[0.68rem] tracking-[0.08em] px-4 py-2 border border-border text-ainova-muted cursor-default transition-all hover:border-ainova-accent2/30 hover:text-ainova-accent2"
-            style={{ background: 'rgba(255,255,255,0.01)' }}
+            className="font-space text-[0.68rem] tracking-[0.08em] px-4 py-2 rounded-lg border border-border/50 text-ainova-muted cursor-default transition-all duration-300 hover:border-ainova-accent2/20 hover:text-ainova-accent2"
+            style={{ background: 'hsla(220, 30%, 12%, 0.2)' }}
           >
             {p}
           </motion.span>

@@ -29,7 +29,7 @@ const FeaturesSection = () => {
   const f = translations.features;
 
   return (
-    <section className="py-20 md:py-32 px-6 md:px-16 border-t border-border" style={{ background: 'rgba(6,13,26,0.5)' }} id="features">
+    <section className="py-20 md:py-32 px-6 md:px-16" id="features">
       <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-start">
         <div>
           <motion.div
@@ -52,9 +52,9 @@ const FeaturesSection = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="flex gap-6 py-7 border-b border-border first:border-t"
+                className="flex gap-6 py-7 border-b border-border/50 first:border-t first:border-border/50"
               >
-                <span className="font-space text-[0.65rem] text-ainova-accent flex-shrink-0 pt-0.5 opacity-60">{String(i + 1).padStart(2, '0')}</span>
+                <span className="font-space text-[0.65rem] text-ainova-accent flex-shrink-0 pt-0.5 opacity-40">{String(i + 1).padStart(2, '0')}</span>
                 <div>
                   <div className="font-syne font-bold text-ainova-bright text-[0.95rem] mb-1.5">{t(item.title, lang)}</div>
                   <div className="text-[0.82rem] text-ainova-muted leading-[1.8]">{t(item.text, lang)}</div>
@@ -69,14 +69,14 @@ const FeaturesSection = () => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.85 }}
-          className="sticky top-24 rounded border border-border overflow-hidden"
-          style={{ background: '#010508', boxShadow: '0 40px 100px rgba(0,0,0,0.8)' }}
+          className="sticky top-24 glass-card overflow-hidden"
+          style={{ boxShadow: '0 24px 64px rgba(0,0,0,0.4)' }}
         >
-          <div className="border-b border-border px-4 py-3 flex items-center gap-1.5" style={{ background: 'rgba(255,255,255,0.02)' }}>
-            <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#3f1f1f' }} />
-            <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#3f3520' }} />
-            <span className="w-2.5 h-2.5 rounded-full" style={{ background: '#1a3a2a' }} />
-            <span className="font-space text-[0.62rem] ml-2" style={{ color: '#2d3748' }}>ainova.intelligence.ts</span>
+          <div className="border-b border-border/30 px-4 py-3 flex items-center gap-1.5" style={{ background: 'hsla(220, 30%, 12%, 0.3)' }}>
+            <span className="w-2.5 h-2.5 rounded-full bg-destructive/30" />
+            <span className="w-2.5 h-2.5 rounded-full" style={{ background: 'hsl(43, 60%, 30%)' }} />
+            <span className="w-2.5 h-2.5 rounded-full" style={{ background: 'hsl(150, 40%, 25%)' }} />
+            <span className="font-space text-[0.62rem] ml-2 text-ainova-muted/40">ainova.intelligence.ts</span>
           </div>
           <div className="p-7 font-space text-[0.76rem] leading-[2.1]">
             {terminalLines.map((line, i) => {
@@ -85,7 +85,7 @@ const FeaturesSection = () => {
               if (line.type === 'indent') return <span key={i} className="block pl-6">{line.content}</span>;
               if (line.type === 'indent2') return <span key={i} className="block pl-[3.5rem]">{line.content}</span>;
               if (line.type === 'empty') return <span key={i} className="block">&nbsp;</span>;
-              if (line.type === 'cursor') return <span key={i} className="block"><span className="inline-block w-[7px] h-[0.9em] bg-ainova-accent2 align-text-bottom" style={{ animation: 'blink 1.2s step-end infinite', opacity: 0.8 }} /></span>;
+              if (line.type === 'cursor') return <span key={i} className="block"><span className="inline-block w-[7px] h-[0.9em] bg-ainova-accent2 align-text-bottom" style={{ animation: 'blink 1.2s step-end infinite', opacity: 0.6 }} /></span>;
               return null;
             })}
           </div>

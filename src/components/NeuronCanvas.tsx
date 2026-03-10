@@ -8,27 +8,27 @@ interface Neuron {
 }
 
 const DESKTOP_CFG = [
-  { count: 20, sMin: 0.15, sMax: 0.65, spd: 0.07, opMax: 0.22, psMin: 0.003, psMax: 0.009,
-    dist: 75, lineOp: 0.035, lw: 0.3,
-    colors: ['18,48,110', '8,38,88', '14,55,95'] },
-  { count: 15, sMin: 0.45, sMax: 1.35, spd: 0.15, opMax: 0.38, psMin: 0.005, psMax: 0.013,
-    dist: 115, lineOp: 0.065, lw: 0.4,
-    colors: ['59,130,246', '6,182,212', '38,95,200'] },
-  { count: 10, sMin: 1.0, sMax: 2.3, spd: 0.26, opMax: 0.62, psMin: 0.006, psMax: 0.016,
-    dist: 148, lineOp: 0.09, lw: 0.55,
-    colors: ['96,165,250', '6,182,212', '139,92,246'] }
+  { count: 14, sMin: 0.12, sMax: 0.5, spd: 0.04, opMax: 0.12, psMin: 0.002, psMax: 0.006,
+    dist: 80, lineOp: 0.02, lw: 0.3,
+    colors: ['100,130,180', '80,110,160', '90,120,170'] },
+  { count: 10, sMin: 0.4, sMax: 1.0, spd: 0.08, opMax: 0.2, psMin: 0.003, psMax: 0.008,
+    dist: 110, lineOp: 0.035, lw: 0.35,
+    colors: ['100,160,210', '80,180,200', '110,140,200'] },
+  { count: 6, sMin: 0.8, sMax: 1.6, spd: 0.14, opMax: 0.32, psMin: 0.004, psMax: 0.01,
+    dist: 140, lineOp: 0.05, lw: 0.4,
+    colors: ['130,175,230', '90,190,210', '150,140,210'] }
 ];
 
 const MOBILE_CFG = [
-  { count: 8, sMin: 0.2, sMax: 0.5, spd: 0.05, opMax: 0.18, psMin: 0.003, psMax: 0.007,
-    dist: 60, lineOp: 0.03, lw: 0.3,
-    colors: ['18,48,110', '8,38,88'] },
-  { count: 6, sMin: 0.5, sMax: 1.2, spd: 0.1, opMax: 0.3, psMin: 0.004, psMax: 0.01,
-    dist: 90, lineOp: 0.05, lw: 0.4,
-    colors: ['59,130,246', '6,182,212'] },
-  { count: 4, sMin: 1.0, sMax: 1.8, spd: 0.2, opMax: 0.5, psMin: 0.005, psMax: 0.012,
-    dist: 120, lineOp: 0.07, lw: 0.5,
-    colors: ['96,165,250', '6,182,212'] }
+  { count: 6, sMin: 0.15, sMax: 0.4, spd: 0.03, opMax: 0.1, psMin: 0.002, psMax: 0.005,
+    dist: 60, lineOp: 0.02, lw: 0.3,
+    colors: ['100,130,180', '80,110,160'] },
+  { count: 4, sMin: 0.4, sMax: 0.9, spd: 0.06, opMax: 0.16, psMin: 0.003, psMax: 0.007,
+    dist: 85, lineOp: 0.03, lw: 0.35,
+    colors: ['100,160,210', '80,180,200'] },
+  { count: 3, sMin: 0.8, sMax: 1.3, spd: 0.1, opMax: 0.25, psMin: 0.004, psMax: 0.008,
+    dist: 110, lineOp: 0.04, lw: 0.4,
+    colors: ['130,175,230', '90,190,210'] }
 ];
 
 function createNeuron(layerIdx: number, W: number, H: number, init: boolean, cfg: typeof DESKTOP_CFG): Neuron {
@@ -62,7 +62,7 @@ const NeuronCanvas = () => {
     let H = canvas.height = window.innerHeight;
     let animId: number;
     let lastTime = 0;
-    const targetInterval = isMobile ? 50 : 33; // ~20fps mobile, ~30fps desktop
+    const targetInterval = isMobile ? 50 : 33;
 
     const neurons: Neuron[] = [];
     LAYER_CFG.forEach((_, li) => {
@@ -139,7 +139,7 @@ const NeuronCanvas = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-[1]"
-      style={{ opacity: 0.9 }}
+      style={{ opacity: 0.7 }}
     />
   );
 };
