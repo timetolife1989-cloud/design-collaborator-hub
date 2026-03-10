@@ -24,11 +24,11 @@ function createNeuron(W: number, H: number, init: boolean): Neuron {
     z,
     vx: (Math.random() - 0.5) * speed,
     vy: (Math.random() - 0.5) * speed,
-    size: (0.4 + Math.random() * 2.2) * depthScale,
+    size: (1 + Math.random() * 3) * depthScale,
     phase: Math.random() * Math.PI * 2,
-    ps: 0.002 + Math.random() * 0.008,
+    ps: 0.003 + Math.random() * 0.01,
     col: COLORS[Math.floor(Math.random() * COLORS.length)],
-    opMax: (0.1 + z * 0.45) * (0.7 + Math.random() * 0.3),
+    opMax: (0.25 + z * 0.55) * (0.7 + Math.random() * 0.3),
   };
 }
 
