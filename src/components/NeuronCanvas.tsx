@@ -15,8 +15,8 @@ const COLORS = [
 
 function createNeuron(W: number, H: number, init: boolean): Neuron {
   const z = Math.random(); // 0 = far, 1 = near
-  const depthScale = 0.15 + z * 0.85;
-  const speed = 0.01 + z * 0.12;
+  const depthScale = 0.2 + z * 0.8;
+  const speed = 0.02 + z * 0.18;
 
   return {
     x: Math.random() * W,
