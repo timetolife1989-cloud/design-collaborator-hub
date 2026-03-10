@@ -24,18 +24,18 @@ function createNeuron(W: number, H: number, init: boolean): Neuron {
     z,
     vx: (Math.random() - 0.5) * speed,
     vy: (Math.random() - 0.5) * speed,
-    size: (0.4 + Math.random() * 2.2) * depthScale,
+    size: (1 + Math.random() * 3) * depthScale,
     phase: Math.random() * Math.PI * 2,
-    ps: 0.002 + Math.random() * 0.008,
+    ps: 0.003 + Math.random() * 0.01,
     col: COLORS[Math.floor(Math.random() * COLORS.length)],
-    opMax: (0.1 + z * 0.45) * (0.7 + Math.random() * 0.3),
+    opMax: (0.25 + z * 0.55) * (0.7 + Math.random() * 0.3),
   };
 }
 
-const DESKTOP_COUNT = 55;
-const MOBILE_COUNT = 22;
-const CONNECT_DIST = 150;
-const LINE_OP_MAX = 0.06;
+const DESKTOP_COUNT = 90;
+const MOBILE_COUNT = 35;
+const CONNECT_DIST = 200;
+const LINE_OP_MAX = 0.15;
 
 const NeuronCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -138,7 +138,7 @@ const NeuronCanvas = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-[1]"
-      style={{ opacity: 0.8 }}
+      style={{ opacity: 1 }}
     />
   );
 };
