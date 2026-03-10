@@ -8,9 +8,9 @@ interface Neuron {
 }
 
 const COLORS = [
-  '100,140,200', '80,160,210', '120,150,220',
-  '90,180,200', '140,160,230', '110,170,215',
-  '130,145,210', '95,175,205',
+  '200,220,255', '210,230,255', '220,235,255',
+  '190,225,255', '230,240,255', '215,230,250',
+  '225,235,255', '200,235,255',
 ];
 
 function createNeuron(W: number, H: number, init: boolean): Neuron {
@@ -117,12 +117,17 @@ const NeuronCanvas = () => {
         }
       }
 
-      // Draw neurons
+      // Draw neurons as soft glows
       for (const n of neurons) {
         const op = n.opMax * (0.4 + 0.6 * Math.sin(n.phase));
+        const r = n.size * 3;
+        const grad = ctx!.createRadialGradient(n.x, n.y, 0, n.x, n.y, r);
+        grad.addColorStop(0, `rgba(${n.col},${op})`);
+        grad.addColorStop(0.3, `rgba(${n.col},${op * 0.4})`);
+        grad.addColorStop(1, `rgba(${n.col},0)`);
         ctx!.beginPath();
-        ctx!.arc(n.x, n.y, n.size, 0, Math.PI * 2);
-        ctx!.fillStyle = `rgba(${n.col},${op})`;
+        ctx!.arc(n.x, n.y, r, 0, Math.PI * 2);
+        ctx!.fillStyle = grad;
         ctx!.fill();
       }
     }
