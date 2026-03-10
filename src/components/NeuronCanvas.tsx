@@ -32,10 +32,10 @@ function createNeuron(W: number, H: number, init: boolean): Neuron {
   };
 }
 
-const DESKTOP_COUNT = 55;
-const MOBILE_COUNT = 22;
-const CONNECT_DIST = 150;
-const LINE_OP_MAX = 0.06;
+const DESKTOP_COUNT = 90;
+const MOBILE_COUNT = 35;
+const CONNECT_DIST = 200;
+const LINE_OP_MAX = 0.15;
 
 const NeuronCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
